@@ -140,6 +140,11 @@ class Problem:
 
     def isGoalState(self, state: State) -> bool:
         return self.goal.issubset(state)
+    
+    
+    
+    
+
 
     def getSuccessors(self, state: State) -> list[tuple[State, Action, int]]:
         """Return list of (next_state, action, cost=1) triples."""
@@ -154,6 +159,10 @@ class Problem:
 
     def getCostOfActions(self, actions: list[Action]) -> int:
         return len(actions) if actions else 0
+
+    
+    
+
 
 
 # ---------------------------------------------------------------------------
@@ -172,7 +181,10 @@ def is_applicable(state: State, action: Action) -> bool:
     Tip: frozenset supports the .issubset() method and the .isdisjoint() method.
     """
     ### Your code here ###
-    return False
+    return (
+        action.precond_pos.issubset(state)
+        and action.precond_neg.isdisjoint(state)
+    )
     ### End of your code ###
 
 
@@ -186,7 +198,7 @@ def apply_action(state: State, action: Action) -> State:
     The order matters: first remove del_list, then add add_list.
     """
     ### Your code here ###
-    return frozenset({})
+    return (state - action.del_list) | action.add_list
     ### End of your code ###
 
 
@@ -222,6 +234,8 @@ def get_applicable_actions(
     domain: list[ActionSchema],
     objects: Objects,
 ) -> list[Action]:
+    
+    all_actions = get_all_groundings(domain, objects)
     """
     Return a list of all grounded actions that are applicable in state.
 
@@ -241,5 +255,9 @@ def get_applicable_actions(
          Or use get_all_groundings() and filter the results by applicability.
     """
     ### Your code here ###
-    return []
+    return [
+        action
+        for action in all_actions
+        if is_applicable(state, action)
+    ]
     ### End of your code ###

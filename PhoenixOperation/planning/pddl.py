@@ -219,8 +219,15 @@ def get_all_groundings(domain: list[ActionSchema], objects: Objects) -> list[Act
         if any(len(d) == 0 for d in domains):
             continue
         for values in product(*domains):
-            if schema.name == "Move" and len(set(values)) < len(values):
-                continue
+            if schema.name == "Move":
+                from_cell = values[1]
+                to_cell = values[2]
+
+                if from_cell == to_cell:
+                    continue
+
+                if abs(from_cell[0] - to_cell[0]) + abs(from_cell[1] - to_cell[1]) != 1:
+                    continue
             binding = dict(zip(schema.parameters, values))
             groundings.append(schema.ground(binding))
     return groundings

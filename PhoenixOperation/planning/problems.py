@@ -27,7 +27,9 @@ class SimpleRescueProblem(Problem):
         ### Your code here ###
         # Define the goal: patient_0 must be rescued.
         # Tip: The goal is a frozenset of fluents that must all be True in the goal state.
-        goal = frozenset({})
+        goal = frozenset({
+            ("Rescued", "patient_0")
+        })
         ### End of your code ###
 
         super().__init__(initial_state, goal, DOMAIN, objects)
@@ -52,7 +54,9 @@ class MultiRescueProblem(Problem):
         ### Your code here ###
         # Define the goal: every patient must be rescued.
         # Tip: Use a set comprehension over objects["patients"].
-        goal = frozenset({})
+        goal = frozenset({
+            ("Rescued", "patient_0")
+        })
         ### End of your code ###
 
         super().__init__(initial_state, goal, DOMAIN, objects)

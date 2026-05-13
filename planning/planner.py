@@ -192,17 +192,20 @@ def regress(goal_set: State, action: Action) -> State | None:
 
     add_list = frozenset(action.add_list)
     del_list = frozenset(action.del_list)
-    pos_precond = frozenset(action.pos_precond)
-
-    ### End of your code ###
+    pos_precond = frozenset(action.precond_pos)
 
     if not (add_list & goal_set):
         return None
+
     
     if del_list & goal_set:
         return None
+
     
     return (goal_set - add_list) | pos_precond
+
+    ### End of your code ###
+
 
 
 def backwardSearch(problem: Problem) -> list[Action]:
@@ -230,16 +233,9 @@ def backwardSearch(problem: Problem) -> list[Action]:
 
     if goal.issubset(initial_state):
         return []
-    
 
-    print(f"\n[DEBUG] Estado inicial tiene {len(initial_state)} fluentes")
-    print(f"[DEBUG] Goal tiene {len(goal)} fluentes: {goal}")
-    print(f"[DEBUG] Goal subset de initial? {goal.issubset(initial_state)}")
-    
-    static_predicates = {"MedicalPost", "Adjacent", "Pickable"}
-
+    static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
     all_actions = get_all_groundings(problem.domain, problem.objects)
-    print(f"[DEBUG] Total acciones instanciadas: {len(all_actions)}")
 
     queue = Queue()
     queue.push((goal, []))
@@ -248,14 +244,12 @@ def backwardSearch(problem: Problem) -> list[Action]:
     while not queue.isEmpty():
         current_goal, plan = queue.pop()
 
-
         for action in all_actions:
             regressed = regress(current_goal, action)
 
             if regressed is None:
                 continue
 
-            print(f"[DEBUG] Acción relevante: {action.name}, regressed tiene {len(regressed)} fluentes")
             
             is_dead_end = any(
                 fluent[0] in static_predicates and fluent not in initial_state
@@ -264,15 +258,20 @@ def backwardSearch(problem: Problem) -> list[Action]:
             if is_dead_end:
                 continue
 
-            new_plan = [action] + plan  
+            
+            open_goals = frozenset(
+                f for f in regressed if f not in initial_state
+            )
+
+            new_plan = [action] + plan
 
             
-            if regressed.issubset(initial_state):
+            if not open_goals:
                 return new_plan
 
-            if regressed not in visited:
-                visited.add(regressed)
-                queue.push((regressed, new_plan))
+            if open_goals not in visited:
+                visited.add(open_goals)
+                queue.push((open_goals, new_plan))
 
     return []
 

@@ -217,6 +217,7 @@ def get_all_groundings(domain: list[ActionSchema], objects: Objects) -> list[Act
         "p": objects["patients"],
     }
     groundings: list[Action] = []
+    print(f"DEBUG: Generando acciones para {len(domain)} esquemas.")
     for schema in domain:
         domains = [type_map.get(param, []) for param in schema.parameters]
         if any(len(d) == 0 for d in domains):

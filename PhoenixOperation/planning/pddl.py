@@ -172,7 +172,10 @@ def is_applicable(state: State, action: Action) -> bool:
     Tip: frozenset supports the .issubset() method and the .isdisjoint() method.
     """
     ### Your code here ###
-    return False
+    return (
+        action.precond_pos.issubset(state)
+        and action.precond_neg.isdisjoint(state)
+    )
     ### End of your code ###
 
 
@@ -186,8 +189,14 @@ def apply_action(state: State, action: Action) -> State:
     The order matters: first remove del_list, then add add_list.
     """
     ### Your code here ###
-    return frozenset({})
-    ### End of your code ###
+    all_actions = get_all_groundings(domain, objects)
+
+    return [
+        action
+        for action in all_actions
+        if is_applicable(state, action)
+    ]
+        ### End of your code ###
 
 
 def get_all_groundings(domain: list[ActionSchema], objects: Objects) -> list[Action]:
@@ -210,8 +219,15 @@ def get_all_groundings(domain: list[ActionSchema], objects: Objects) -> list[Act
         if any(len(d) == 0 for d in domains):
             continue
         for values in product(*domains):
-            if schema.name == "Move" and len(set(values)) < len(values):
-                continue
+            if schema.name == "Move":
+                from_cell = values[1]
+                to_cell = values[2]
+
+                if from_cell == to_cell:
+                    continue
+
+                if abs(from_cell[0] - to_cell[0]) + abs(from_cell[1] - to_cell[1]) != 1:
+                    continue
             binding = dict(zip(schema.parameters, values))
             groundings.append(schema.ground(binding))
     return groundings

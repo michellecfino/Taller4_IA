@@ -190,7 +190,22 @@ def regress(goal_set: State, action: Action) -> State | None:
     """
     ### Your code here ###
 
+    add_list = frozenset(action.add_list)
+    del_list = frozenset(action.del_list)
+    pos_precond = frozenset(action.precond_pos)
+
+    if not (add_list & goal_set):
+        return None
+
+    
+    if del_list & goal_set:
+        return None
+
+    
+    return (goal_set - add_list) | pos_precond
+
     ### End of your code ###
+
 
 
 def backwardSearch(problem: Problem) -> list[Action]:
@@ -213,7 +228,56 @@ def backwardSearch(problem: Problem) -> list[Action]:
     """
     ### Your code here ###
 
+    initial_state = frozenset(problem.initial_state)
+    goal = frozenset(problem.goal)
+
+    if goal.issubset(initial_state):
+        return []
+
+    static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
+    all_actions = get_all_groundings(problem.domain, problem.objects)
+
+    queue = Queue()
+    queue.push((goal, []))
+    visited = {goal}
+
+    while not queue.isEmpty():
+        current_goal, plan = queue.pop()
+
+        for action in all_actions:
+            regressed = regress(current_goal, action)
+
+            if regressed is None:
+                continue
+
+            
+            is_dead_end = any(
+                fluent[0] in static_predicates and fluent not in initial_state
+                for fluent in regressed
+            )
+            if is_dead_end:
+                continue
+
+            
+            open_goals = frozenset(
+                f for f in regressed if f not in initial_state
+            )
+
+            new_plan = [action] + plan
+
+            
+            if not open_goals:
+                return new_plan
+
+            if open_goals not in visited:
+                visited.add(open_goals)
+                queue.push((open_goals, new_plan))
+
+    return []
+
     ### End of your code ###
+
+
 
 
 # ---------------------------------------------------------------------------

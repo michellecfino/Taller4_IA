@@ -165,7 +165,19 @@ def regress(goal_set: State, action: Action) -> State | None:
     """
     ### Your code here ###
 
+    add_list = frozenset(action.add_list)
+    del_list = frozenset(action.del_list)
+    pos_precond = frozenset(action.pos_precond)
+
     ### End of your code ###
+
+    if not (add_list & goal_set):
+        return None
+    
+    if del_list & goal_set:
+        return None
+    
+    return (goal_set - add_list) | pos_precond
 
 
 def backwardSearch(problem: Problem) -> list[Action]:
@@ -188,7 +200,60 @@ def backwardSearch(problem: Problem) -> list[Action]:
     """
     ### Your code here ###
 
+    initial_state = frozenset(problem.initial_state)
+    goal = frozenset(problem.goal)
+
+    if goal.issubset(initial_state):
+        return []
+    
+
+    print(f"\n[DEBUG] Estado inicial tiene {len(initial_state)} fluentes")
+    print(f"[DEBUG] Goal tiene {len(goal)} fluentes: {goal}")
+    print(f"[DEBUG] Goal subset de initial? {goal.issubset(initial_state)}")
+    
+    static_predicates = {"MedicalPost", "Adjacent", "Pickable"}
+
+    all_actions = get_all_groundings(problem.domain, problem.objects)
+    print(f"[DEBUG] Total acciones instanciadas: {len(all_actions)}")
+
+    queue = Queue()
+    queue.push((goal, []))
+    visited = {goal}
+
+    while not queue.isEmpty():
+        current_goal, plan = queue.pop()
+
+
+        for action in all_actions:
+            regressed = regress(current_goal, action)
+
+            if regressed is None:
+                continue
+
+            print(f"[DEBUG] Acción relevante: {action.name}, regressed tiene {len(regressed)} fluentes")
+            
+            is_dead_end = any(
+                fluent[0] in static_predicates and fluent not in initial_state
+                for fluent in regressed
+            )
+            if is_dead_end:
+                continue
+
+            new_plan = [action] + plan  
+
+            
+            if regressed.issubset(initial_state):
+                return new_plan
+
+            if regressed not in visited:
+                visited.add(regressed)
+                queue.push((regressed, new_plan))
+
+    return []
+
     ### End of your code ###
+
+
 
 
 # ---------------------------------------------------------------------------

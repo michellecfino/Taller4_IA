@@ -151,8 +151,6 @@ def forwardBFS(problem: Problem) -> list[Action]:
     while not queue.isEmpty():
         current_state, path = queue.pop()
         
-        # MUEVE EL PRINT AQUÍ (Dentro del primer while)
-        print(f"DEBUG: Expandiendo estado con {len(path)} acciones acumuladas. Sucesores: {len(problem.getSuccessors(current_state))}")
 
         for next_state, action, _ in problem.getSuccessors(current_state):
             if next_state not in visited:
@@ -305,7 +303,58 @@ def aStarPlanner(
          Track the best g-cost seen for each state to avoid stale expansions.
     """
     ### Your code here ###
+    start_state = problem.getStartState()
 
+    if problem.isGoalState(start_state):
+        return []
+
+    frontier = PriorityQueue()
+
+    start_h = heuristic(
+        start_state,
+        problem.goal,
+        problem.domain,
+        problem.objects,
+    )
+
+    frontier.push((start_state, [], 0), start_h)
+
+    best_cost = {}
+    best_cost[start_state] = 0
+
+    while not frontier.isEmpty():
+
+        current_state, path, g = frontier.pop()
+
+        if problem.isGoalState(current_state):
+            return path
+
+        for next_state, action, cost in problem.getSuccessors(current_state):
+
+            new_g = g + cost
+
+            if (
+                next_state not in best_cost
+                or new_g < best_cost[next_state]
+            ):
+
+                best_cost[next_state] = new_g
+
+                h = heuristic(
+                    next_state,
+                    problem.goal,
+                    problem.domain,
+                    problem.objects,
+                )
+
+                f = new_g + h
+
+                frontier.push(
+                    (next_state, path + [action], new_g),
+                    f
+                )
+
+    return []
     ### End of your code ###
 
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from planning.pddl import ActionSchema, State, Objects
+from planning.pddl import ActionSchema, State, Objects, get_all_groundings, get_applicable_actions
+
 
 
 def nullHeuristic(
@@ -45,7 +46,34 @@ def ignorePreconditionsHeuristic(
          Remember: with no preconditions, every grounding is "applicable".
     """
     ### Your code here ###
+    unsatisfied = set(goal - state)
 
+    if not unsatisfied:
+            return 0
+
+    actions = get_all_groundings(domain, objects)
+
+    count = 0
+
+    while unsatisfied:
+
+        best_action = None
+        best_cover = set()
+
+        for action in actions:
+            covered = unsatisfied & action.add_list
+
+            if len(covered) > len(best_cover):
+                best_cover = covered
+                best_action = action
+
+        if not best_cover:
+            return float("inf")
+
+        unsatisfied -= best_cover
+        count += 1
+
+    return count
     ### End of your code ###
 
 
@@ -79,5 +107,35 @@ def ignoreDeleteListsHeuristic(
          each step (preconditions still apply in the relaxed model).
     """
     ### Your code here ###
+    relaxed_state = set(state)
 
+    count = 0
+
+    while not goal.issubset(relaxed_state):
+
+        applicable = get_applicable_actions(
+            frozenset(relaxed_state),
+            domain,
+            objects
+        )
+
+        best_action = None
+        best_gain = set()
+
+        for action in applicable:
+
+            gain = (goal - relaxed_state) & action.add_list
+
+            if len(gain) > len(best_gain):
+                best_gain = gain
+                best_action = action
+
+        if not best_gain:
+            return float("inf")
+
+        relaxed_state |= best_action.add_list
+
+        count += 1
+
+    return count
     ### End of your code ###

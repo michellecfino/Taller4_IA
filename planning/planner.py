@@ -225,52 +225,58 @@ def backwardSearch(problem: Problem) -> list[Action]:
          Pickable) that are false in the initial state — these are dead ends.
     """
     ### Your code here ###
-
     initial_state = frozenset(problem.initial_state)
     goal = frozenset(problem.goal)
-
     if goal.issubset(initial_state):
         return []
 
-    static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
     all_actions = get_all_groundings(problem.domain, problem.objects)
     actions_by_fluent = {}
     for action in all_actions:
         for fluent in action.add_list:
             actions_by_fluent.setdefault(fluent, []).append(action)
 
+    static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
+    
     queue = Queue()
     queue.push((goal, []))
     visited = {goal}
+    
 
     while not queue.isEmpty():
         current_goal, plan = queue.pop()
         problem._expanded += 1
+
+        locations = {}
+        impossible = False
+        for fluent in current_goal:
+            if fluent[0] == "At":
+                obj, loc = fluent[1], fluent[2]
+                if obj in locations and locations[obj] != loc:
+                    impossible = True
+                    break
+                locations[obj] = loc
         
+        if impossible:
+            continue
+
         relevant_actions = set()
         for fluent in current_goal:
             if fluent in actions_by_fluent:
                 relevant_actions.update(actions_by_fluent[fluent])
 
-        for action in relevant_actions: 
+        for action in relevant_actions:
             regressed = regress(current_goal, action)
 
             if regressed is None:
                 continue
 
-            
-            is_dead_end = any(
-                fluent[0] in static_predicates and fluent not in initial_state
-                for fluent in regressed
-            )
-            if is_dead_end:
+            if any(f[0] in static_predicates and f not in initial_state for f in regressed):
                 continue
 
-            
             if regressed.issubset(initial_state):
                 return [action] + plan
 
-            # Usar la descripción de objetivo como estado para el "visited"
             if regressed not in visited:
                 visited.add(regressed)
                 queue.push((regressed, [action] + plan))

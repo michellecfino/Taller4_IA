@@ -234,6 +234,10 @@ def backwardSearch(problem: Problem) -> list[Action]:
 
     static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
     all_actions = get_all_groundings(problem.domain, problem.objects)
+    actions_by_fluent = {}
+    for action in all_actions:
+        for fluent in action.add_list:
+            actions_by_fluent.setdefault(fluent, []).append(action)
 
     queue = Queue()
     queue.push((goal, []))
@@ -241,8 +245,14 @@ def backwardSearch(problem: Problem) -> list[Action]:
 
     while not queue.isEmpty():
         current_goal, plan = queue.pop()
+        problem._expanded += 1
+        
+        relevant_actions = set()
+        for fluent in current_goal:
+            if fluent in actions_by_fluent:
+                relevant_actions.update(actions_by_fluent[fluent])
 
-        for action in all_actions:
+        for action in relevant_actions: 
             regressed = regress(current_goal, action)
 
             if regressed is None:
@@ -257,19 +267,13 @@ def backwardSearch(problem: Problem) -> list[Action]:
                 continue
 
             
-            open_goals = frozenset(
-                f for f in regressed if f not in initial_state
-            )
+            if regressed.issubset(initial_state):
+                return [action] + plan
 
-            new_plan = [action] + plan
-
-            
-            if not open_goals:
-                return new_plan
-
-            if open_goals not in visited:
-                visited.add(open_goals)
-                queue.push((open_goals, new_plan))
+            # Usar la descripción de objetivo como estado para el "visited"
+            if regressed not in visited:
+                visited.add(regressed)
+                queue.push((regressed, [action] + plan))
 
     return []
 

@@ -164,7 +164,31 @@ def regress(goal_set: State, action: Action) -> State | None:
          Check relevance first, then check for contradictions, then compute.
     """
     ### Your code here ###
+    goal_set = frozenset(goal_set)
 
+    add_effects = frozenset(action.add_list)
+    del_effects = frozenset(action.del_list)
+    preconditions = frozenset(action.precond_pos)
+
+    # -------------------------------------------------
+    # 1. Relevance:
+    # action must contribute at least one goal fluent
+    # -------------------------------------------------
+    if not (add_effects & goal_set):
+        return None
+
+    # -------------------------------------------------
+    # 2. No contradiction:
+    # action must not delete a required goal fluent
+    # -------------------------------------------------
+    if del_effects & goal_set:
+        return None
+
+    # -------------------------------------------------
+    # 3. Regression formula:
+    # (g - ADD(a)) U PRECOND(a)
+    # -------------------------------------------------
+    regressed_goal = (goal_set - add_effects) | preconditions
     ### End of your code ###
 
 
@@ -187,6 +211,64 @@ def backwardSearch(problem: Problem) -> list[Action]:
          Pickable) that are false in the initial state — these are dead ends.
     """
     ### Your code here ###
+
+    initial_state = frozenset(problem.initial_state)
+    goal = frozenset(problem.goal)
+    if goal.issubset(initial_state):
+        return []
+
+    all_actions = get_all_groundings(problem.domain, problem.objects)
+    actions_by_fluent = {}
+    for action in all_actions:
+        for fluent in action.add_list:
+            actions_by_fluent.setdefault(fluent, []).append(action)
+
+    static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
+    
+    queue = Queue()
+    queue.push((goal, []))
+    visited = {goal}
+    
+
+    while not queue.isEmpty():
+        current_goal, plan = queue.pop()
+        problem._expanded += 1
+
+        locations = {}
+        impossible = False
+        for fluent in current_goal:
+            if fluent[0] == "At":
+                obj, loc = fluent[1], fluent[2]
+                if obj in locations and locations[obj] != loc:
+                    impossible = True
+                    break
+                locations[obj] = loc
+        
+        if impossible:
+            continue
+
+        relevant_actions = set()
+        for fluent in current_goal:
+            if fluent in actions_by_fluent:
+                relevant_actions.update(actions_by_fluent[fluent])
+
+        for action in relevant_actions:
+            regressed = regress(current_goal, action)
+
+            if regressed is None:
+                continue
+
+            if any(f[0] in static_predicates and f not in initial_state for f in regressed):
+                continue
+
+            if regressed.issubset(initial_state):
+                return [action] + plan
+
+            if regressed not in visited:
+                visited.add(regressed)
+                queue.push((regressed, [action] + plan))
+
+    return []
 
     ### End of your code ###
 

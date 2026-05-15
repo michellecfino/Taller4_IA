@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from importlib.resources import path
+###Para las métricas de complejidades 
+import time
 
 from planning.pddl import (
     Action,
@@ -27,6 +30,8 @@ def tinyBaseSearch(problem: Problem) -> list[Action]:
 
     Useful to understand the Action object format and plan structure.
     """
+    start_time = time.time()
+    problem._expanded = 1
     robot = "robot"
     supplies = "supplies_0"
     patient = "patient_0"
@@ -116,6 +121,12 @@ def tinyBaseSearch(problem: Problem) -> list[Action]:
             [("At", patient, c12)],
         ),
     ]
+    end_time = time.time()
+
+    print("Tiny Base Search")
+    print("Expanded states:", problem._expanded)
+    print("Plan length:", len(plan))
+    print("Execution time:", end_time - start_time, "seconds")
     return plan
 
 
@@ -138,6 +149,7 @@ def forwardBFS(problem: Problem) -> list[Action]:
          avoid revisiting the same state twice (graph search, not tree search).
     """
     ### Your code here ###
+    star_time = time.time()
     start_state = problem.getStartState()
     if problem.isGoalState(start_state):
         return []
@@ -190,6 +202,7 @@ def regress(goal_set: State, action: Action) -> State | None:
          Check relevance first, then check for contradictions, then compute.
     """
     ### Your code here ###
+    star_time = time.time()
 
     goal_set = frozenset(goal_set)
 
@@ -230,6 +243,7 @@ def backwardSearch(problem: Problem) -> list[Action]:
          Pickable) that are false in the initial state — these are dead ends.
     """
     ### Your code here ###
+    start_time = time.time()
     initial_state = frozenset(problem.initial_state)
     goal = frozenset(problem.goal)
     if goal.issubset(initial_state):
@@ -280,6 +294,9 @@ def backwardSearch(problem: Problem) -> list[Action]:
                 continue
 
             if regressed.issubset(initial_state):
+                print("Backward Search")
+                print("Expanded goals:", problem._expanded)
+                print("Plan length:", len([action] + plan))
                 return [action] + plan
 
             if regressed not in visited:
@@ -298,6 +315,7 @@ def backwardSearch(problem: Problem) -> list[Action]:
 # ---------------------------------------------------------------------------
 
 # Heuristic signature:  heuristic(state, goal, domain, objects) -> float
+star_time = time.time()
 Heuristic = Callable[[State, State, list[ActionSchema], Objects], float]
 
 
@@ -340,8 +358,13 @@ def aStarPlanner(
     while not frontier.isEmpty():
 
         current_state, path, g = frontier.pop()
+        problem._expanded += 1
 
         if problem.isGoalState(current_state):
+            print("A* Planner")
+            print("Expanded states:", problem._expanded)
+            print("Plan length:", len(path))
+            print("Solution cost:", g)
             return path
 
         for next_state, action, cost in problem.getSuccessors(current_state):

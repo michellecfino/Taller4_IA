@@ -79,7 +79,6 @@ def hierarchicalSearch(problem: Problem, hlas: list[HLA]) -> list[Action]:
         if expansions <= 5:
             print(f"[DEBUG HTN] Expansión {expansions}, plan: {[s.name for s in current_plan]}")
 
-        # Buscar el primer paso no primitivo
         first_hla_idx = None
         for i, step in enumerate(current_plan):
             if not is_primitive(step):
@@ -87,7 +86,6 @@ def hierarchicalSearch(problem: Problem, hlas: list[HLA]) -> list[Action]:
                 break
 
         if first_hla_idx is None:
-            # Plan completamente primitivo — verificar ejecución desde estado actual
             state = current_state
             valid = True
             for action in current_plan:
@@ -97,11 +95,9 @@ def hierarchicalSearch(problem: Problem, hlas: list[HLA]) -> list[Action]:
                     valid = False
                     break
             if valid and problem.isGoalState(state):
-                # Reconstruir el plan completo desde el inicio
                 return current_plan
             continue
 
-        # Ejecutar todas las acciones primitivas ANTES del primer HLA
         state_before_hla = current_state
         valid = True
         for i in range(first_hla_idx):

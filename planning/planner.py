@@ -150,11 +150,14 @@ def forwardBFS(problem: Problem) -> list[Action]:
 
     while not queue.isEmpty():
         current_state, path = queue.pop()
-        
+        problem._expanded += 1
 
         for next_state, action, _ in problem.getSuccessors(current_state):
             if next_state not in visited:
                 if problem.isGoalState(next_state):
+                    print("Forward BFS")
+                    print("Expanded states:", problem._expanded)
+                    print("Plan length:", len(path + [action]))
                     return path + [action]
                 
                 visited.add(next_state)

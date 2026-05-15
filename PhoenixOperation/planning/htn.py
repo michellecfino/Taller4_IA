@@ -63,7 +63,68 @@ def hierarchicalSearch(problem: Problem, hlas: list[HLA]) -> list[Action]:
          To simulate execution, apply each action in order using apply_action().
     """
     ### Your code here ###
+    initial_plan = list(hlas)
+    queue = Queue()
+    # Guardamos (plan, estado_actual) para simular correctamente
+    queue.push((initial_plan, problem.initial_state))
+    visited = set()
+    expansions = 0
 
+    while not queue.isEmpty():
+        current_plan, current_state = queue.pop()
+        expansions += 1
+
+        if expansions <= 5:
+            print(f"[DEBUG HTN] Expansión {expansions}, plan: {[s.name for s in current_plan]}")
+
+        first_hla_idx = None
+        for i, step in enumerate(current_plan):
+            if not is_primitive(step):
+                first_hla_idx = i
+                break
+
+        if first_hla_idx is None:
+            state = current_state
+            valid = True
+            for action in current_plan:
+                if is_applicable(state, action):
+                    state = apply_action(state, action)
+                else:
+                    valid = False
+                    break
+            if valid and problem.isGoalState(state):
+                return current_plan
+            continue
+
+        state_before_hla = current_state
+        valid = True
+        for i in range(first_hla_idx):
+            step = current_plan[i]
+            if is_primitive(step):
+                if is_applicable(state_before_hla, step):
+                    state_before_hla = apply_action(state_before_hla, step)
+                else:
+                    valid = False
+                    break
+        
+        if not valid:
+            continue
+
+        hla = current_plan[first_hla_idx]
+
+        for refinement in hla.refinements:
+            new_plan = (
+                current_plan[:first_hla_idx] 
+                + refinement 
+                + current_plan[first_hla_idx + 1:]
+            )
+            plan_key = tuple(step.name for step in new_plan)
+            if plan_key not in visited:
+                visited.add(plan_key)
+                queue.push((new_plan, current_state))
+
+    print(f"[DEBUG HTN] Total expansiones: {expansions}")
+    return []
     ### End of your code ###
 
 

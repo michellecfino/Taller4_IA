@@ -188,19 +188,21 @@ def regress(goal_set: State, action: Action) -> State | None:
     """
     ### Your code here ###
 
-    add_list = frozenset(action.add_list)
-    del_list = frozenset(action.del_list)
-    pos_precond = frozenset(action.precond_pos)
+    goal_set = frozenset(goal_set)
 
-    if not (add_list & goal_set):
+    add_effects = frozenset(action.add_list)
+    del_effects = frozenset(action.del_list)
+    preconditions = frozenset(action.precond_pos)
+
+    if not (add_effects & goal_set):
         return None
 
-    
-    if del_list & goal_set:
+    if del_effects & goal_set:
         return None
 
-    
-    return (goal_set - add_list) | pos_precond
+    regressed_goal = (goal_set - add_effects) | preconditions
+
+    return frozenset(regressed_goal)
 
     ### End of your code ###
 

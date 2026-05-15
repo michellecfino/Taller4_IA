@@ -57,15 +57,14 @@ def ignorePreconditionsHeuristic(
 
     while unsatisfied:
 
-        best_action = None
         best_cover = set()
 
         for action in actions:
-            covered = unsatisfied & action.add_list
+            covered = unsatisfied & set(action.add_list)
 
             if len(covered) > len(best_cover):
                 best_cover = covered
-                best_action = action
+                
 
         if not best_cover:
             return float("inf")
@@ -124,7 +123,7 @@ def ignoreDeleteListsHeuristic(
 
         for action in applicable:
 
-            gain = (goal - relaxed_state) & action.add_list
+            gain = (goal - relaxed_state) & set(action.add_list)
 
             if len(gain) > len(best_gain):
                 best_gain = gain
@@ -133,7 +132,7 @@ def ignoreDeleteListsHeuristic(
         if not best_gain:
             return float("inf")
 
-        relaxed_state |= best_action.add_list
+        relaxed_state |= set(best_action.add_list)
 
         count += 1
 

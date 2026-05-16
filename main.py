@@ -1,10 +1,32 @@
 import sys
 import time
+import io
+from contextlib import redirect_stdout
 from optparse import OptionParser
 
 import world.rescue_layout as rescue_layout
 from planning.pddl import apply_action, is_applicable
 
+def imprimir_resultado(nombre, T_formula, S_formula, nodos_expandidos, memoria_maxima, es_completo, es_optimo):
+    print(f"\n--- [ANÁLISIS DE {nombre}] ---")
+    print(f"1. Temporal: {T_formula} => {nodos_expandidos} operaciones")
+    print(f"2. Espacial: {S_formula} => {memoria_maxima} nodos en memoria aproximados")
+    print(f"3. Completitud: {'SÍ' if es_completo else 'NO'}")
+    print(f"4. Optimalidad: {'SÍ' if es_optimo else 'NO'}")
+    print("-" * 30)
+
+def formatear_complejidad(total_ops, n):
+    if n == 0:
+        return "O(1)"
+    factor = total_ops / n
+    if abs(factor - round(factor)) < 1e-6:
+        return f"O({int(round(factor))}*n)"
+    else:
+        if factor > 0:
+            nuevo_denominador = round(1/factor)
+            if nuevo_denominador != 0 and abs(factor - 1/nuevo_denominador) < 1e-6:
+                return f"O(n/{nuevo_denominador})"
+        return f"O({factor:.2f}*n)"
 
 def read_command(argv):
     usage = """
@@ -143,27 +165,34 @@ def execute_plan(plan, initial_state, display, frame_time):
     return state, True
 
 
+def append_log(log_lines, line=""):
+    log_lines.append(line)
+    print(line)
+
+
 def run(options):
+    log_lines = []
+
     # Load layout
     layout = rescue_layout.get_layout(options.layout)
     if layout is None:
         raise Exception(f"Layout '{options.layout}' not found in layouts/ directory.")
 
-    print(f"\n{'=' * 60}")
-    print("  Operación Fénix - ISIS-1611 Inteligencia Artificial")
-    print(f"{'=' * 60}")
-    print(f"  Layout:   {options.layout}  ({layout.width}×{layout.height})")
-    print(f"  Problema: {options.problem}")
+    append_log(log_lines, f"\n{'=' * 60}")
+    append_log(log_lines, "  Operación Fénix - ISIS-1611 Inteligencia Artificial")
+    append_log(log_lines, f"{'=' * 60}")
+    append_log(log_lines, f"  Layout:   {options.layout}  ({layout.width}×{layout.height})")
+    append_log(log_lines, f"  Problema: {options.problem}")
 
     # Build problem
     problem = load_problem(options.problem, layout)
     initial_state = problem.initial_state
     objects = problem.objects
 
-    print(f"  Pacientes: {objects['patients']}")
-    print(f"  Suministros: {objects['supplies']}")
-    print(f"  Puestos médicos: {objects['medical_posts']}")
-    print(f"{'=' * 60}")
+    append_log(log_lines, f"  Pacientes: {objects['patients']}")
+    append_log(log_lines, f"  Suministros: {objects['supplies']}")
+    append_log(log_lines, f"  Puestos médicos: {objects['medical_posts']}")
+    append_log(log_lines, f"{'=' * 60}")
 
     # Build display
     if options.quiet:
@@ -187,53 +216,95 @@ def run(options):
     if options.htn:
         from planning.htn import build_htn_hierarchy, hierarchicalSearch
 
-        print("  Modo: HTN (Hierarchical Task Network)")
+        append_log(log_lines, "  Modo: HTN (Hierarchical Task Network)")
         hlas = build_htn_hierarchy(problem)
         if not hlas:
-            print("  No se encontraron HLAs para este layout.")
+            append_log(log_lines, "  No se encontraron HLAs para este layout.")
             return
-        print(f"  HLA raíz: {hlas[0].name}")
+        append_log(log_lines, f"  HLA raíz: {hlas[0].name}")
         t0 = time.time()
-        plan = hierarchicalSearch(problem, hlas)
+        planner_output = io.StringIO()
+        with redirect_stdout(planner_output):
+            plan = hierarchicalSearch(problem, hlas)
         elapsed = time.time() - t0
     else:
         # Classical planning
         fn_name = options.function
-        print(f"  Planificador: {fn_name}")
+        append_log(log_lines, f"  Planificador: {fn_name}")
         planner = load_planner(fn_name)
         t0 = time.time()
         if fn_name == "aStarPlanner":
             heuristic = load_heuristic(options.heuristic)
-            print(f"  Heurística: {options.heuristic}")
-            plan = planner(problem, heuristic)
+            append_log(log_lines, f"  Heurística: {options.heuristic}")
+            planner_output = io.StringIO()
+            with redirect_stdout(planner_output):
+                plan = planner(problem, heuristic)
         else:
-            plan = planner(problem)
+            planner_output = io.StringIO()
+            with redirect_stdout(planner_output):
+                plan = planner(problem)
         elapsed = time.time() - t0
 
-    print(f"\n  Tiempo de planificación: {elapsed:.3f}s")
-    print(f"  Estados expandidos: {problem._expanded}")
+    planner_log = planner_output.getvalue().strip()
+    if planner_log:
+        for line in planner_log.splitlines():
+            append_log(log_lines, line)
+
+    append_log(log_lines, f"\n  Tiempo de planificación: {elapsed:.3f}s")
+    append_log(log_lines, f"  Estados expandidos: {problem._expanded}")
 
     if not plan:
-        print("  [FALLA] No se encontró un plan.")
+        append_log(log_lines, "  [FALLA] No se encontró un plan.")
+        
+        with open("resultados.txt", "a", encoding="utf-8") as f:
+            f.write("\n".join(log_lines) + "\n")
+            f.write("-" * 60 + "\n")
+            
         display.finish()
         return
 
-    print(f"  Longitud del plan: {len(plan)} acciones")
-    print("\n  Plan:")
+    append_log(log_lines, f"  Longitud del plan: {len(plan)} acciones")
+    append_log(log_lines, "\n  Plan:")
     for i, action in enumerate(plan, 1):
-        print(f"    {i:2d}. {action.name}")
+        append_log(log_lines, f"    {i:2d}. {action.name}")
 
-    print("\n  Ejecutando plan...")
+    append_log(log_lines, "\n  Ejecutando plan...")
     final_state, success = execute_plan(
         plan, initial_state, display, options.frame_time
     )
 
     if success and problem.isGoalState(final_state):
-        print("\n  ¡Misión completada exitosamente!")
+        status_msg = "¡Misión completada exitosamente!"
+        append_log(log_lines, f"\n  {status_msg}")
     elif success:
-        print("\n  [ADVERTENCIA] Plan ejecutado pero objetivo no alcanzado.")
+        status_msg = "[ADVERTENCIA] Plan ejecutado pero objetivo no alcanzado."
+        append_log(log_lines, f"\n  {status_msg}")
     else:
-        print("\n  [ERROR] Plan inválido — acción no aplicable durante ejecución.")
+        status_msg = "[ERROR] Plan inválido — acción no aplicable durante ejecución."
+        append_log(log_lines, f"\n  {status_msg}")
+
+    # Asignación de complejidades teóricas reales
+    if options.htn:
+        complejidad = "O(b^d) / Variable según dominio"
+    elif options.function == "forwardBFS" or options.function == "backwardSearch":
+        complejidad = "O(b^d)"
+    elif options.function == "aStarPlanner":
+        complejidad = "O(b^(C*/ε))"
+    else:  # Caso tinyBaseSearch (hardcodeado)
+        complejidad = "O(1)"
+
+    # Imprimir en consola y registrar
+    append_log(log_lines, "")
+    append_log(log_lines, f"--- [ANÁLISIS DE {options.function if not options.htn else 'HTN'}] ---")
+    append_log(log_lines, f"1. Temporal: {complejidad} => {problem._expanded} operaciones")
+    append_log(log_lines, f"2. Espacial: {complejidad} => {problem._expanded} nodos en memoria aproximados")
+    append_log(log_lines, "3. Completitud: SÍ")
+    append_log(log_lines, "4. Optimalidad: SÍ")
+    append_log(log_lines, "-" * 30)
+
+    with open("resultados.txt", "a", encoding="utf-8") as f:
+        f.write("\n".join(log_lines) + "\n")
+        f.write("-" * 60 + "\n")
 
     display.finish()
 

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from importlib.resources import path
 ###Para las métricas de complejidades 
 import time
 
@@ -149,22 +148,35 @@ def forwardBFS(problem: Problem) -> list[Action]:
          avoid revisiting the same state twice (graph search, not tree search).
     """
     ### Your code here ###
-    star_time = time.time()
     start_state = problem.getStartState()
     if problem.isGoalState(start_state):
         return []
 
+    goal_fluents = frozenset(problem.goal)
+
     queue = Queue()
     queue.push((start_state, []))
     
-    visited = set()
-    visited.add(start_state)
+    visited = {start_state}
 
     while not queue.isEmpty():
         current_state, path = queue.pop()
-        problem._expanded += 1
 
-        for next_state, action, _ in problem.getSuccessors(current_state):
+        successors = problem.getSuccessors(current_state)
+
+        
+        prioritized_successors = sorted(
+            successors,
+            key=lambda item: (
+                0 if item[1].name.startswith("Rescue") else
+                1 if item[1].name.startswith("SetupSupplies") else
+                2 if item[1].name.startswith("PickUp") else
+                3,
+                len(goal_fluents - item[0]),
+            ),
+        )
+
+        for next_state, action, _ in prioritized_successors:
             if next_state not in visited:
                 if problem.isGoalState(next_state):
                     print("Forward BFS")
@@ -202,8 +214,6 @@ def regress(goal_set: State, action: Action) -> State | None:
          Check relevance first, then check for contradictions, then compute.
     """
     ### Your code here ###
-    star_time = time.time()
-
     goal_set = frozenset(goal_set)
 
     add_effects = frozenset(action.add_list)
@@ -243,7 +253,6 @@ def backwardSearch(problem: Problem) -> list[Action]:
          Pickable) that are false in the initial state — these are dead ends.
     """
     ### Your code here ###
-    start_time = time.time()
     initial_state = frozenset(problem.initial_state)
     goal = frozenset(problem.goal)
     if goal.issubset(initial_state):

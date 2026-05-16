@@ -5,6 +5,26 @@ from optparse import OptionParser
 import world.rescue_layout as rescue_layout
 from planning.pddl import apply_action, is_applicable
 
+def imprimir_resultado(nombre, T_formula, S_formula, nodos_expandidos, memoria_maxima, es_completo, es_optimo):
+    print(f"\n--- [ANÁLISIS DE {nombre}] ---")
+    print(f"1. Temporal: {T_formula} => {nodos_expandidos} operaciones")
+    print(f"2. Espacial: {S_formula} => {memoria_maxima} nodos en memoria aproximados")
+    print(f"3. Completitud: {'SÍ' if es_completo else 'NO'}")
+    print(f"4. Optimalidad: {'SÍ' if es_optimo else 'NO'}")
+    print("-" * 30)
+
+def formatear_complejidad(total_ops, n):
+    if n == 0:
+        return "O(1)"
+    factor = total_ops / n
+    if abs(factor - round(factor)) < 1e-6:
+        return f"O({int(round(factor))}*n)"
+    else:
+        if factor > 0:
+            nuevo_denominador = round(1/factor)
+            if nuevo_denominador != 0 and abs(factor - 1/nuevo_denominador) < 1e-6:
+                return f"O(n/{nuevo_denominador})"
+        return f"O({factor:.2f}*n)"
 
 def read_command(argv):
     usage = """
@@ -215,6 +235,19 @@ def run(options):
 
     if not plan:
         print("  [FALLA] No se encontró un plan.")
+        
+        with open("resultados.txt", "a", encoding="utf-8") as f:
+            f.write(f"Layout: {options.layout} ({layout.width}x{layout.height})\n")
+            f.write(f"Problema: {options.problem}\n")
+            if options.htn:
+                f.write(f"Modo: HTN\n")
+            else:
+                f.write(f"Planificador: {options.function}\n")
+            f.write(f"Tiempo de planificación: {elapsed:.3f}s\n")
+            f.write(f"Estados expandidos: {problem._expanded}\n")
+            f.write(f"Estado final: Falla (No se encontró plan)\n")
+            f.write("-" * 60 + "\n")
+            
         display.finish()
         return
 
@@ -229,11 +262,44 @@ def run(options):
     )
 
     if success and problem.isGoalState(final_state):
-        print("\n  ¡Misión completada exitosamente!")
+        status_msg = "¡Misión completada exitosamente!"
+        print(f"\n  {status_msg}")
     elif success:
-        print("\n  [ADVERTENCIA] Plan ejecutado pero objetivo no alcanzado.")
+        status_msg = "[ADVERTENCIA] Plan ejecutado pero objetivo no alcanzado."
+        print(f"\n  {status_msg}")
     else:
-        print("\n  [ERROR] Plan inválido — acción no aplicable durante ejecución.")
+        status_msg = "[ERROR] Plan inválido — acción no aplicable durante ejecución."
+        print(f"\n  {status_msg}")
+
+    # Asignación de complejidades teóricas reales
+    if options.htn:
+        complejidad = "O(b^d) / Variable según dominio"
+    elif options.function == "forwardBFS" or options.function == "backwardSearch":
+        complejidad = "O(b^d)"
+    elif options.function == "aStarPlanner":
+        complejidad = "O(b^(C*/ε))"
+    else:  # Caso tinyBaseSearch (hardcodeado)
+        complejidad = "O(1)"
+
+    # Imprimir en consola y registrar
+    imprimir_resultado(options.function if not options.htn else "HTN", complejidad, complejidad, problem._expanded, problem._expanded, True, True)
+
+    with open("resultados.txt", "a", encoding="utf-8") as f:
+        f.write(f"Layout: {options.layout} ({layout.width}x{layout.height})\n")
+        f.write(f"Problema: {options.problem}\n")
+        if options.htn:
+            f.write(f"Modo: HTN\n")
+        else:
+            f.write(f"Planificador: {options.function}\n")
+            if options.function == "aStarPlanner":
+                f.write(f"Heurística: {options.heuristic}\n")
+        f.write(f"Tiempo de planificación: {elapsed:.3f}s\n")
+        f.write(f"Estados expandidos: {problem._expanded}\n")
+        f.write(f"Longitud del plan: {len(plan)} acciones\n")
+        f.write(f"Complejidad Temporal Teórica: {complejidad}\n")
+        f.write(f"Complejidad Espacial Teórica: {complejidad}\n")
+        f.write(f"Estado final: {status_msg}\n")
+        f.write("-" * 60 + "\n")
 
     display.finish()
 

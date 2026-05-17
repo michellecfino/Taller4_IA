@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 ###Para las métricas de complejidades 
 import time
+import sys
 
 from planning.pddl import (
     Action,
@@ -229,7 +230,6 @@ def regress(goal_set: State, action: Action) -> State | None:
     regressed_goal = (goal_set - add_effects) | preconditions
 
     return frozenset(regressed_goal)
-
     ### End of your code ###
 
 
@@ -267,26 +267,76 @@ def backwardSearch(problem: Problem) -> list[Action]:
     static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
     
     queue = Queue()
-    queue.push((goal, []))
-    visited = {goal}
+    queue.push((goal, None, None)) 
     
+    visited = [goal]
+    LIMITE_EXPANSIONES = 100000
 
     while not queue.isEmpty():
-        current_goal, plan = queue.pop()
+        current_node = queue.pop()
+        current_goal, action_taken, parent_node = current_node
         problem._expanded += 1
 
+        # ==========================================================
+        # CORTOCIRCUITO DE SEGURIDAD (Resource Bound)
+        # ==========================================================
+        if problem._expanded > LIMITE_EXPANSIONES:
+            sys.__stdout__.write(f"\n[ALERTA] Límite de seguridad alcanzado ({LIMITE_EXPANSIONES} expansiones). Abortando búsqueda hacia atrás.\n")
+            sys.__stdout__.flush()
+            return []
+
+        # ==========================================================
+        # LATIDO DE CONSOLA (Heartbeat)
+        # ==========================================================
+        if problem._expanded % 2000 == 0:
+            mensaje = f"[DEBUG] Explorando... Nodos expandidos: {problem._expanded} | Tamaño subobjetivo: {len(current_goal)}\n"
+            sys.__stdout__.write(mensaje)
+            sys.__stdout__.flush() 
+
+        # ====================================================================
+        # DETECCIÓN DE MUTEX (ESTADOS FÍSICAMENTE IMPOSIBLES) AVANZADA
+        # ====================================================================
         locations = {}
+        carrying = []
+        robot_free = False
         impossible = False
+
         for fluent in current_goal:
+            # 1. Un objeto no puede estar en dos lugares a la vez
             if fluent[0] == "At":
                 obj, loc = fluent[1], fluent[2]
                 if obj in locations and locations[obj] != loc:
                     impossible = True
                     break
                 locations[obj] = loc
-        
+            
+            # 2. Registrar qué está cargando el robot
+            elif fluent[0] == "Carrying":
+                carrying.append(fluent[2]) 
+                
+            # 3. Registrar si se requiere que el robot esté libre
+            elif fluent[0] == "Free":
+                robot_free = True
+
+        # Evaluaciones de Mutex Lógico:
+        if not impossible:
+            # Regla A: El robot NO puede estar libre y cargando algo al mismo tiempo
+            if robot_free and len(carrying) > 0:
+                impossible = True
+                
+            # Regla B: El robot solo puede cargar UNA cosa a la vez 
+            if len(carrying) > 1:
+                impossible = True
+                
+            # Regla C: Un objeto NO puede estar siendo cargado y estar en el piso al mismo tiempo
+            for obj in carrying:
+                if obj in locations:
+                    impossible = True
+                    break
+
         if impossible:
             continue
+        # ====================================================================
 
         relevant_actions = set()
         for fluent in current_goal:
@@ -303,17 +353,24 @@ def backwardSearch(problem: Problem) -> list[Action]:
                 continue
 
             if regressed.issubset(initial_state):
-                print("Backward Search")
-                print("Expanded goals:", problem._expanded)
-                print("Plan length:", len([action] + plan))
-                return [action] + plan
+                plan = [action]
+                curr = current_node
+                while curr[2] is not None:
+                    plan.append(curr[1])
+                    curr = curr[2]
+                return plan
 
-            if regressed not in visited:
-                visited.add(regressed)
-                queue.push((regressed, [action] + plan))
+            is_subsumed = False
+            for v in visited:
+                if v.issubset(regressed):
+                    is_subsumed = True
+                    break
+            
+            if not is_subsumed:
+                visited.append(regressed)
+                queue.push((regressed, action, current_node))
 
     return []
-
     ### End of your code ###
 
 

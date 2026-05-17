@@ -642,3 +642,89 @@ Plan length: 9
 4. Optimalidad: SÍ
 ------------------------------
 ------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyBase  (5×7)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Planificador: backwardSearch
+
+  Tiempo de planificación: 18.105s
+  Estados expandidos: 7085
+  Longitud del plan: 9 acciones
+
+  Plan:
+     1. Move(robot, (1, 4), (1, 3))
+     2. PickUp(robot, supplies_0, (1, 3))
+     3. Move(robot, (1, 3), (1, 2))
+     4. SetupSupplies(robot, supplies_0, (1, 2))
+     5. Move(robot, (1, 2), (1, 1))
+     6. PickUp(robot, patient_0, (1, 1))
+     7. Move(robot, (1, 1), (1, 2))
+     8. PutDown(robot, patient_0, (1, 2))
+     9. Rescue(robot, patient_0, (1, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE backwardSearch] ---
+1. Temporal: O(b^d) => 7085 operaciones
+2. Espacial: O(b^d) => 7085 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyMulti  (7×7)
+  Problema: MultiRescueProblem
+  Pacientes: ['patient_0', 'patient_1']
+  Suministros: ['supplies_0', 'supplies_1']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Planificador: backwardSearch
+
+  Tiempo de planificación: 82.631s
+  Estados expandidos: 10001
+  [FALLA] No se encontró un plan.
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyMulti  (7×7)
+  Problema: MultiRescueProblem
+  Pacientes: ['patient_0', 'patient_1']
+  Suministros: ['supplies_0', 'supplies_1']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Planificador: backwardSearch
+
+  Tiempo de planificación: 69.620s
+  Estados expandidos: 10001
+  [FALLA] No se encontró un plan.
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyMulti  (7×7)
+  Problema: MultiRescueProblem
+  Pacientes: ['patient_0', 'patient_1']
+  Suministros: ['supplies_0', 'supplies_1']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Planificador: backwardSearch
+
+  Tiempo de planificación: 178.764s
+  Estados expandidos: 15001
+  [FALLA] No se encontró un plan.
+------------------------------------------------------------

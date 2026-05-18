@@ -46,33 +46,35 @@ def ignorePreconditionsHeuristic(
          Remember: with no preconditions, every grounding is "applicable".
     """
     ### Your code here ###
-    unsatisfied = set(goal - state)
+    unsatisfied = frozenset(goal - state)
 
     if not unsatisfied:
-            return 0
+        return 0
 
-    actions = get_all_groundings(domain, objects)
+    coverage_sets = []
+    for action in get_all_groundings(domain, objects):
+        covered = frozenset(unsatisfied & action.add_list)
+        if covered:
+            coverage_sets.append(covered)
 
-    count = 0
+    if not coverage_sets:
+        return float("inf")
 
-    while unsatisfied:
+    frontier = [(frozenset(), 0)]
+    visited = {frozenset()}
 
-        best_cover = set()
+    while frontier:
+        covered, steps = frontier.pop(0)
+        if covered == unsatisfied:
+            return steps
 
-        for action in actions:
-            covered = unsatisfied & set(action.add_list)
+        for action_cover in coverage_sets:
+            next_covered = covered | action_cover
+            if next_covered not in visited:
+                visited.add(next_covered)
+                frontier.append((next_covered, steps + 1))
 
-            if len(covered) > len(best_cover):
-                best_cover = covered
-                
-
-        if not best_cover:
-            return float("inf")
-
-        unsatisfied -= best_cover
-        count += 1
-
-    return count
+    return float("inf")
     ### End of your code ###
 
 

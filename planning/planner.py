@@ -233,6 +233,72 @@ def regress(goal_set: State, action: Action) -> State | None:
     ### End of your code ###
 
 
+def _normalize_goal(goal_state: State, initial_state: State) -> State:
+    return frozenset(fluent for fluent in goal_state if fluent not in initial_state)
+
+
+def _is_inconsistent_goal(goal_state: State, initial_state: State) -> bool:
+    static_predicates = {"MedicalPost", "Adjacent", "Pickable"}
+    locations = {}
+    held_by_agent = {}
+
+    for fluent in goal_state:
+        predicate = fluent[0]
+
+        if predicate in static_predicates and fluent not in initial_state:
+            return True
+
+        if predicate == "At":
+            obj, loc = fluent[1], fluent[2]
+            if obj in locations and locations[obj] != loc:
+                return True
+            locations[obj] = loc
+
+        elif predicate == "Holding":
+            agent, obj = fluent[1], fluent[2]
+            if agent in held_by_agent and held_by_agent[agent] != obj:
+                return True
+            held_by_agent[agent] = obj
+            if obj in locations:
+                return True
+
+        elif predicate == "HandsFree":
+            agent = fluent[1]
+            if agent in held_by_agent:
+                return True
+
+    return False
+
+
+def _goal_key(goal_state: State) -> tuple:
+    return tuple(sorted(goal_state))
+
+
+def _plan_has_robot_reset(candidate_plan: list[Action]) -> bool:
+    robot_locations_after = []
+    robot_locations_before = []
+
+    for action in candidate_plan:
+        before = next(
+            (fluent[2] for fluent in action.precond_pos if fluent[0] == "At" and fluent[1] == "robot"),
+            None,
+        )
+        after = next(
+            (fluent[2] for fluent in action.add_list if fluent[0] == "At" and fluent[1] == "robot"),
+            before,
+        )
+        robot_locations_before.append(before)
+        robot_locations_after.append(after)
+
+    for index in range(len(candidate_plan) - 1):
+        current_after = robot_locations_after[index]
+        next_before = robot_locations_before[index + 1]
+        if current_after is not None and next_before is not None and current_after != next_before:
+            return True
+
+    return False
+
+
 
 def backwardSearch(problem: Problem) -> list[Action]:
     """
@@ -258,34 +324,46 @@ def backwardSearch(problem: Problem) -> list[Action]:
     if goal.issubset(initial_state):
         return []
 
+    static_predicates = {"MedicalPost", "Adjacent", "Pickable"}
+
     all_actions = get_all_groundings(problem.domain, problem.objects)
-    actions_by_fluent = {}
+    valid_actions = []
     for action in all_actions:
+        if any(
+            fluent[0] in static_predicates and fluent not in initial_state
+            for fluent in action.precond_pos
+        ):
+            continue
+        valid_actions.append(action)
+
+    actions_by_fluent = {}
+    for action in valid_actions:
         for fluent in action.add_list:
             actions_by_fluent.setdefault(fluent, []).append(action)
 
-    static_predicates = {"MedicalPost", "Adjacent", "Pickable", "Free"}
-    
     queue = Queue()
     queue.push((goal, []))
     visited = {goal}
+    best_goal_size = {_goal_key(goal): len(goal)}
+
+    
     
 
     while not queue.isEmpty():
         current_goal, plan = queue.pop()
         problem._expanded += 1
 
-        locations = {}
-        impossible = False
-        for fluent in current_goal:
-            if fluent[0] == "At":
-                obj, loc = fluent[1], fluent[2]
-                if obj in locations and locations[obj] != loc:
-                    impossible = True
-                    break
-                locations[obj] = loc
         
-        if impossible:
+
+        current_goal = _normalize_goal(current_goal, initial_state)
+
+        
+
+        if _is_inconsistent_goal(current_goal, initial_state):
+            if problem._expanded <= 10 or problem._expanded % 25 == 0:
+                print(
+                    f"[DEBUG][Backward] Poda por inconsistencia en expansión {problem._expanded}."
+                )
             continue
 
         relevant_actions = set()
@@ -293,24 +371,59 @@ def backwardSearch(problem: Problem) -> list[Action]:
             if fluent in actions_by_fluent:
                 relevant_actions.update(actions_by_fluent[fluent])
 
-        for action in relevant_actions:
+        if not relevant_actions:
+            if problem._expanded <= 10 or problem._expanded % 25 == 0:
+                print(
+                    f"[DEBUG][Backward] Sin acciones relevantes en expansión {problem._expanded}."
+                )
+            continue
+
+        ordered_actions = sorted(
+            relevant_actions,
+            key=lambda action: (
+                -len(action.add_list & current_goal),
+                len(action.precond_pos),
+                action.name,
+            ),
+        )
+
+        for action in ordered_actions:
             regressed = regress(current_goal, action)
 
             if regressed is None:
                 continue
 
-            if any(f[0] in static_predicates and f not in initial_state for f in regressed):
+            regressed = _normalize_goal(regressed, initial_state)
+
+            if _is_inconsistent_goal(regressed, initial_state):
                 continue
 
+            candidate_plan = [action] + plan
+            if _plan_has_robot_reset(candidate_plan):
+                continue
+
+            if regressed in visited:
+                continue
+
+            regressed_key = _goal_key(regressed)
+            regressed_size = len(regressed)
+            previous_size = best_goal_size.get(regressed_key)
+            if previous_size is not None and previous_size <= regressed_size:
+                continue
+
+            best_goal_size[regressed_key] = regressed_size
+
             if regressed.issubset(initial_state):
+                print(
+                    f"[DEBUG][Backward] Solución encontrada en expansión {problem._expanded}."
+                )
                 print("Backward Search")
                 print("Expanded goals:", problem._expanded)
-                print("Plan length:", len([action] + plan))
-                return [action] + plan
+                print("Plan length:", len(candidate_plan))
+                return candidate_plan
 
-            if regressed not in visited:
-                visited.add(regressed)
-                queue.push((regressed, [action] + plan))
+            visited.add(regressed)
+            queue.push((regressed, candidate_plan))
 
     return []
 

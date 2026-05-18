@@ -170,6 +170,10 @@ def append_log(log_lines, line=""):
     print(line)
 
 
+def append_console_only(line=""):
+    print(line)
+
+
 def run(options):
     log_lines = []
 
@@ -248,7 +252,10 @@ def run(options):
     planner_log = planner_output.getvalue().strip()
     if planner_log:
         for line in planner_log.splitlines():
-            append_log(log_lines, line)
+            if line.startswith("[DEBUG]"):
+                append_console_only(line)
+            else:
+                append_log(log_lines, line)
 
     append_log(log_lines, f"\n  Tiempo de planificación: {elapsed:.3f}s")
     append_log(log_lines, f"  Estados expandidos: {problem._expanded}")

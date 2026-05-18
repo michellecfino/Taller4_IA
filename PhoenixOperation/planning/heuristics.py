@@ -45,7 +45,7 @@ def ignorePreconditionsHeuristic(
          Remember: with no preconditions, every grounding is "applicable".
     """
     ### Your code here ###
-
+    
     ### End of your code ###
 
 

@@ -3,6 +3,9 @@ from __future__ import annotations
 from itertools import product
 
 
+_GROUNDINGS_CACHE: dict[tuple, list["Action"]] = {}
+
+
 # ---------------------------------------------------------------------------
 # Type aliases (for readability in signatures and docstrings)
 #
@@ -207,6 +210,25 @@ def get_all_groundings(domain: list[ActionSchema], objects: Objects) -> list[Act
     Return ALL grounded actions for every schema in domain,
     regardless of applicability. Used internally by Problem and backward search.
     """
+    cache_key = (
+        tuple(
+            (
+                schema.name,
+                tuple(schema.parameters),
+                tuple(schema.precond_pos),
+                tuple(schema.precond_neg),
+                tuple(schema.add_list),
+                tuple(schema.del_list),
+            )
+            for schema in domain
+        ),
+        tuple((key, tuple(value)) for key, value in sorted(objects.items())),
+    )
+
+    cached_groundings = _GROUNDINGS_CACHE.get(cache_key)
+    if cached_groundings is not None:
+        return cached_groundings
+
     type_map: dict[str, list] = {
         "r": objects["robots"],
         "loc": objects["cells"],
@@ -226,6 +248,8 @@ def get_all_groundings(domain: list[ActionSchema], objects: Objects) -> list[Act
                 continue
             binding = dict(zip(schema.parameters, values))
             groundings.append(schema.ground(binding))
+
+    _GROUNDINGS_CACHE[cache_key] = groundings
     return groundings
 
 

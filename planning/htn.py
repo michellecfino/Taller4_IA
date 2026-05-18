@@ -66,6 +66,7 @@ def hierarchicalSearch(problem: Problem, hlas: list[HLA]) -> list[Action]:
     ### Your code here ###
 
     initial_plan = list(hlas)
+    problem._expanded = 0
     queue = Queue()
     # Guardamos (plan, estado_actual) para simular correctamente
     queue.push((initial_plan, problem.initial_state))
@@ -75,6 +76,7 @@ def hierarchicalSearch(problem: Problem, hlas: list[HLA]) -> list[Action]:
     while not queue.isEmpty():
         current_plan, current_state = queue.pop()
         expansions += 1
+        problem._expanded = expansions
 
         if expansions <= 5:
             print(f"[DEBUG HTN] Expansión {expansions}, plan: {[s.name for s in current_plan]}")

@@ -2,112 +2,21 @@
 ============================================================
   Operación Fénix - ISIS-1611 Inteligencia Artificial
 ============================================================
-  Layout:   mediumRescue  (12×12)
-  Problema: SimpleRescueProblem
-  Pacientes: ['patient_0']
-  Suministros: ['supplies_0']
-  Puestos médicos: [(4, 2)]
-============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 214982.
-Backward Search
-Expanded goals: 214982
-Plan length: 27
-
-  Tiempo de planificación: 15.881s
-  Estados expandidos: 214982
-  Longitud del plan: 27 acciones
-
-  Plan:
-     1. Move(robot, (1, 10), (1, 9))
-     2. Move(robot, (1, 9), (1, 8))
-     3. Move(robot, (1, 8), (2, 8))
-     4. Move(robot, (2, 8), (3, 8))
-     5. Move(robot, (3, 8), (4, 8))
-     6. Move(robot, (4, 8), (5, 8))
-     7. Move(robot, (5, 8), (5, 7))
-     8. Move(robot, (5, 7), (5, 6))
-     9. Move(robot, (5, 6), (4, 6))
-    10. PickUp(robot, supplies_0, (4, 6))
-    11. Move(robot, (1, 10), (1, 9))
-    12. Move(robot, (1, 9), (1, 8))
-    13. Move(robot, (1, 8), (1, 7))
-    14. Move(robot, (1, 7), (1, 6))
-    15. Move(robot, (1, 6), (1, 5))
-    16. Move(robot, (1, 5), (1, 4))
-    17. Move(robot, (1, 4), (1, 3))
-    18. Move(robot, (1, 3), (1, 2))
-    19. Move(robot, (1, 2), (2, 2))
-    20. Move(robot, (2, 2), (3, 2))
-    21. Move(robot, (3, 2), (4, 2))
-    22. SetupSupplies(robot, supplies_0, (4, 2))
-    23. Move(robot, (4, 2), (4, 1))
-    24. PickUp(robot, patient_0, (4, 1))
-    25. Move(robot, (4, 1), (4, 2))
-    26. PutDown(robot, patient_0, (4, 2))
-    27. Rescue(robot, patient_0, (4, 2))
-
-  Ejecutando plan...
-
-  [ERROR] Plan inválido — acción no aplicable durante ejecución.
-
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 214982 operaciones
-2. Espacial: O(b^d) => 214982 nodos en memoria aproximados
-3. Completitud: SÍ
-4. Optimalidad: SÍ
-------------------------------
-------------------------------------------------------------
-
-============================================================
-  Operación Fénix - ISIS-1611 Inteligencia Artificial
-============================================================
-  Layout:   mediumRescue  (12×12)
-  Problema: SimpleRescueProblem
-  Pacientes: ['patient_0']
-  Suministros: ['supplies_0']
-  Puestos médicos: [(4, 2)]
-============================================================
-  Planificador: backwardSearch
-
-  Tiempo de planificación: 0.103s
-  Estados expandidos: 1
-  [FALLA] No se encontró un plan.
-------------------------------------------------------------
-
-============================================================
-  Operación Fénix - ISIS-1611 Inteligencia Artificial
-============================================================
   Layout:   tinyBase  (5×7)
   Problema: SimpleRescueProblem
   Pacientes: ['patient_0']
   Suministros: ['supplies_0']
   Puestos médicos: [(1, 2)]
 ============================================================
-  Planificador: backwardSearch
-
-  Tiempo de planificación: 0.004s
-  Estados expandidos: 1
-  [FALLA] No se encontró un plan.
-------------------------------------------------------------
-
-============================================================
-  Operación Fénix - ISIS-1611 Inteligencia Artificial
-============================================================
-  Layout:   tinyBase  (5×7)
-  Problema: SimpleRescueProblem
-  Pacientes: ['patient_0']
-  Suministros: ['supplies_0']
-  Puestos médicos: [(1, 2)]
-============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 274.
-Backward Search
-Expanded goals: 274
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 505
 Plan length: 9
+Solution cost: 9
 
-  Tiempo de planificación: 0.022s
-  Estados expandidos: 274
+  Tiempo de planificación: 1.172s
+  Estados expandidos: 505
   Longitud del plan: 9 acciones
 
   Plan:
@@ -125,116 +34,9 @@ Plan length: 9
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 274 operaciones
-2. Espacial: O(b^d) => 274 nodos en memoria aproximados
-3. Completitud: SÍ
-4. Optimalidad: SÍ
-------------------------------
-------------------------------------------------------------
-
-============================================================
-  Operación Fénix - ISIS-1611 Inteligencia Artificial
-============================================================
-  Layout:   mediumRescue  (12×12)
-  Problema: SimpleRescueProblem
-  Pacientes: ['patient_0']
-  Suministros: ['supplies_0']
-  Puestos médicos: [(4, 2)]
-============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 170390.
-Backward Search
-Expanded goals: 170390
-Plan length: 32
-
-  Tiempo de planificación: 26.997s
-  Estados expandidos: 170390
-  Longitud del plan: 32 acciones
-
-  Plan:
-     1. Move(robot, (1, 10), (1, 9))
-     2. Move(robot, (1, 9), (1, 8))
-     3. Move(robot, (1, 8), (2, 8))
-     4. Move(robot, (2, 8), (3, 8))
-     5. Move(robot, (3, 8), (4, 8))
-     6. Move(robot, (4, 8), (5, 8))
-     7. Move(robot, (5, 8), (5, 7))
-     8. Move(robot, (5, 7), (5, 6))
-     9. Move(robot, (5, 6), (4, 6))
-    10. PickUp(robot, supplies_0, (4, 6))
-    11. Move(robot, (4, 6), (5, 6))
-    12. Move(robot, (5, 6), (5, 7))
-    13. Move(robot, (5, 7), (5, 8))
-    14. Move(robot, (5, 8), (4, 8))
-    15. Move(robot, (4, 8), (3, 8))
-    16. Move(robot, (3, 8), (2, 8))
-    17. Move(robot, (2, 8), (1, 8))
-    18. Move(robot, (1, 8), (1, 7))
-    19. Move(robot, (1, 7), (1, 6))
-    20. Move(robot, (1, 6), (1, 5))
-    21. Move(robot, (1, 5), (1, 4))
-    22. Move(robot, (1, 4), (1, 3))
-    23. Move(robot, (1, 3), (1, 2))
-    24. Move(robot, (1, 2), (2, 2))
-    25. Move(robot, (2, 2), (3, 2))
-    26. Move(robot, (3, 2), (4, 2))
-    27. SetupSupplies(robot, supplies_0, (4, 2))
-    28. Move(robot, (4, 2), (4, 1))
-    29. PickUp(robot, patient_0, (4, 1))
-    30. Move(robot, (4, 1), (4, 2))
-    31. PutDown(robot, patient_0, (4, 2))
-    32. Rescue(robot, patient_0, (4, 2))
-
-  Ejecutando plan...
-
-  ¡Misión completada exitosamente!
-
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 170390 operaciones
-2. Espacial: O(b^d) => 170390 nodos en memoria aproximados
-3. Completitud: SÍ
-4. Optimalidad: SÍ
-------------------------------
-------------------------------------------------------------
-
-============================================================
-  Operación Fénix - ISIS-1611 Inteligencia Artificial
-============================================================
-  Layout:   tinyBase  (5×7)
-  Problema: SimpleRescueProblem
-  Pacientes: ['patient_0']
-  Suministros: ['supplies_0']
-  Puestos médicos: [(1, 2)]
-============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 274.
-Backward Search
-Expanded goals: 274
-Plan length: 9
-
-  Tiempo de planificación: 0.023s
-  Estados expandidos: 274
-  Longitud del plan: 9 acciones
-
-  Plan:
-     1. Move(robot, (1, 4), (1, 3))
-     2. PickUp(robot, supplies_0, (1, 3))
-     3. Move(robot, (1, 3), (1, 2))
-     4. SetupSupplies(robot, supplies_0, (1, 2))
-     5. Move(robot, (1, 2), (1, 1))
-     6. PickUp(robot, patient_0, (1, 1))
-     7. Move(robot, (1, 1), (1, 2))
-     8. PutDown(robot, patient_0, (1, 2))
-     9. Rescue(robot, patient_0, (1, 2))
-
-  Ejecutando plan...
-
-  ¡Misión completada exitosamente!
-
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 274 operaciones
-2. Espacial: O(b^d) => 274 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 505 operaciones
+2. Espacial: O(b^(C*/ε)) => 505 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -249,14 +51,15 @@ Plan length: 9
   Suministros: ['supplies_0']
   Puestos médicos: [(5, 2)]
 ============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 15089.
-Backward Search
-Expanded goals: 15089
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 2633
 Plan length: 23
+Solution cost: 23
 
-  Tiempo de planificación: 1.954s
-  Estados expandidos: 15089
+  Tiempo de planificación: 34.552s
+  Estados expandidos: 2633
   Longitud del plan: 23 acciones
 
   Plan:
@@ -288,9 +91,9 @@ Plan length: 23
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 15089 operaciones
-2. Espacial: O(b^d) => 15089 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 2633 operaciones
+2. Espacial: O(b^(C*/ε)) => 2633 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -305,14 +108,15 @@ Plan length: 23
   Suministros: ['supplies_0']
   Puestos médicos: [(4, 2)]
 ============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 264565.
-Backward Search
-Expanded goals: 264565
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 19953
 Plan length: 26
+Solution cost: 26
 
-  Tiempo de planificación: 46.246s
-  Estados expandidos: 264565
+  Tiempo de planificación: 58.952s
+  Estados expandidos: 19953
   Longitud del plan: 26 acciones
 
   Plan:
@@ -347,9 +151,239 @@ Plan length: 26
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 264565 operaciones
-2. Espacial: O(b^d) => 264565 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 19953 operaciones
+2. Espacial: O(b^(C*/ε)) => 19953 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   openRescue  (12×10)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 19953
+Plan length: 26
+Solution cost: 26
+
+  Tiempo de planificación: 49.060s
+  Estados expandidos: 19953
+  Longitud del plan: 26 acciones
+
+  Plan:
+     1. Move(robot, (1, 8), (1, 7))
+     2. Move(robot, (1, 7), (1, 6))
+     3. Move(robot, (1, 6), (1, 5))
+     4. Move(robot, (1, 5), (2, 5))
+     5. Move(robot, (2, 5), (3, 5))
+     6. Move(robot, (3, 5), (4, 5))
+     7. Move(robot, (4, 5), (5, 5))
+     8. Move(robot, (5, 5), (6, 5))
+     9. Move(robot, (6, 5), (7, 5))
+    10. Move(robot, (7, 5), (8, 5))
+    11. Move(robot, (8, 5), (9, 5))
+    12. PickUp(robot, supplies_0, (9, 5))
+    13. Move(robot, (9, 5), (8, 5))
+    14. Move(robot, (8, 5), (7, 5))
+    15. Move(robot, (7, 5), (6, 5))
+    16. Move(robot, (6, 5), (5, 5))
+    17. Move(robot, (5, 5), (4, 5))
+    18. Move(robot, (4, 5), (4, 4))
+    19. Move(robot, (4, 4), (4, 3))
+    20. Move(robot, (4, 3), (4, 2))
+    21. SetupSupplies(robot, supplies_0, (4, 2))
+    22. Move(robot, (4, 2), (4, 1))
+    23. PickUp(robot, patient_0, (4, 1))
+    24. Move(robot, (4, 1), (4, 2))
+    25. PutDown(robot, patient_0, (4, 2))
+    26. Rescue(robot, patient_0, (4, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 19953 operaciones
+2. Espacial: O(b^(C*/ε)) => 19953 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   openRescue  (12×10)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 19953
+Plan length: 26
+Solution cost: 26
+
+  Tiempo de planificación: 42.975s
+  Estados expandidos: 19953
+  Longitud del plan: 26 acciones
+
+  Plan:
+     1. Move(robot, (1, 8), (1, 7))
+     2. Move(robot, (1, 7), (1, 6))
+     3. Move(robot, (1, 6), (1, 5))
+     4. Move(robot, (1, 5), (2, 5))
+     5. Move(robot, (2, 5), (3, 5))
+     6. Move(robot, (3, 5), (4, 5))
+     7. Move(robot, (4, 5), (5, 5))
+     8. Move(robot, (5, 5), (6, 5))
+     9. Move(robot, (6, 5), (7, 5))
+    10. Move(robot, (7, 5), (8, 5))
+    11. Move(robot, (8, 5), (9, 5))
+    12. PickUp(robot, supplies_0, (9, 5))
+    13. Move(robot, (9, 5), (8, 5))
+    14. Move(robot, (8, 5), (7, 5))
+    15. Move(robot, (7, 5), (6, 5))
+    16. Move(robot, (6, 5), (5, 5))
+    17. Move(robot, (5, 5), (4, 5))
+    18. Move(robot, (4, 5), (4, 4))
+    19. Move(robot, (4, 4), (4, 3))
+    20. Move(robot, (4, 3), (4, 2))
+    21. SetupSupplies(robot, supplies_0, (4, 2))
+    22. Move(robot, (4, 2), (4, 1))
+    23. PickUp(robot, patient_0, (4, 1))
+    24. Move(robot, (4, 1), (4, 2))
+    25. PutDown(robot, patient_0, (4, 2))
+    26. Rescue(robot, patient_0, (4, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 19953 operaciones
+2. Espacial: O(b^(C*/ε)) => 19953 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   smallRescue  (10×10)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(5, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 2633
+Plan length: 23
+Solution cost: 23
+
+  Tiempo de planificación: 1.851s
+  Estados expandidos: 2633
+  Longitud del plan: 23 acciones
+
+  Plan:
+     1. Move(robot, (1, 8), (2, 8))
+     2. Move(robot, (2, 8), (3, 8))
+     3. Move(robot, (3, 8), (4, 8))
+     4. Move(robot, (4, 8), (5, 8))
+     5. Move(robot, (5, 8), (6, 8))
+     6. Move(robot, (6, 8), (6, 7))
+     7. Move(robot, (6, 7), (6, 6))
+     8. Move(robot, (6, 6), (5, 6))
+     9. PickUp(robot, supplies_0, (5, 6))
+    10. Move(robot, (5, 6), (6, 6))
+    11. Move(robot, (6, 6), (6, 5))
+    12. Move(robot, (6, 5), (6, 4))
+    13. Move(robot, (6, 4), (7, 4))
+    14. Move(robot, (7, 4), (7, 3))
+    15. Move(robot, (7, 3), (7, 2))
+    16. Move(robot, (7, 2), (6, 2))
+    17. Move(robot, (6, 2), (5, 2))
+    18. SetupSupplies(robot, supplies_0, (5, 2))
+    19. Move(robot, (5, 2), (5, 1))
+    20. PickUp(robot, patient_0, (5, 1))
+    21. Move(robot, (5, 1), (5, 2))
+    22. PutDown(robot, patient_0, (5, 2))
+    23. Rescue(robot, patient_0, (5, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 2633 operaciones
+2. Espacial: O(b^(C*/ε)) => 2633 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   cornerRescue  (8×9)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 3277
+Plan length: 19
+Solution cost: 19
+
+  Tiempo de planificación: 2.019s
+  Estados expandidos: 3277
+  Longitud del plan: 19 acciones
+
+  Plan:
+     1. Move(robot, (1, 7), (1, 6))
+     2. Move(robot, (1, 6), (1, 5))
+     3. Move(robot, (1, 5), (1, 4))
+     4. Move(robot, (1, 4), (1, 3))
+     5. Move(robot, (1, 3), (2, 3))
+     6. Move(robot, (2, 3), (3, 3))
+     7. Move(robot, (3, 3), (4, 3))
+     8. Move(robot, (4, 3), (5, 3))
+     9. Move(robot, (5, 3), (6, 3))
+    10. PickUp(robot, supplies_0, (6, 3))
+    11. Move(robot, (6, 3), (5, 3))
+    12. Move(robot, (5, 3), (4, 3))
+    13. Move(robot, (4, 3), (4, 2))
+    14. SetupSupplies(robot, supplies_0, (4, 2))
+    15. Move(robot, (4, 2), (4, 1))
+    16. PickUp(robot, patient_0, (4, 1))
+    17. Move(robot, (4, 1), (4, 2))
+    18. PutDown(robot, patient_0, (4, 2))
+    19. Rescue(robot, patient_0, (4, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 3277 operaciones
+2. Espacial: O(b^(C*/ε)) => 3277 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -364,14 +398,15 @@ Plan length: 26
   Suministros: ['supplies_0']
   Puestos médicos: [(4, 2)]
 ============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 170390.
-Backward Search
-Expanded goals: 170390
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 11163
 Plan length: 32
+Solution cost: 32
 
-  Tiempo de planificación: 26.822s
-  Estados expandidos: 170390
+  Tiempo de planificación: 21.202s
+  Estados expandidos: 11163
   Longitud del plan: 32 acciones
 
   Plan:
@@ -412,9 +447,9 @@ Plan length: 32
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 170390 operaciones
-2. Espacial: O(b^d) => 170390 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 11163 operaciones
+2. Espacial: O(b^(C*/ε)) => 11163 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -429,14 +464,15 @@ Plan length: 32
   Suministros: ['supplies_0']
   Puestos médicos: [(4, 4)]
 ============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 20287.
-Backward Search
-Expanded goals: 20287
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 1271
 Plan length: 23
+Solution cost: 23
 
-  Tiempo de planificación: 2.542s
-  Estados expandidos: 20287
+  Tiempo de planificación: 1.848s
+  Estados expandidos: 1271
   Longitud del plan: 23 acciones
 
   Plan:
@@ -468,9 +504,9 @@ Plan length: 23
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 20287 operaciones
-2. Espacial: O(b^d) => 20287 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 1271 operaciones
+2. Espacial: O(b^(C*/ε)) => 1271 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -479,50 +515,115 @@ Plan length: 23
 ============================================================
   Operación Fénix - ISIS-1611 Inteligencia Artificial
 ============================================================
-  Layout:   cornerRescue  (8×9)
+  Layout:   openRescue  (12×10)
   Problema: SimpleRescueProblem
   Pacientes: ['patient_0']
   Suministros: ['supplies_0']
   Puestos médicos: [(4, 2)]
 ============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 34745.
-Backward Search
-Expanded goals: 34745
-Plan length: 19
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 19953
+Plan length: 26
+Solution cost: 26
 
-  Tiempo de planificación: 4.733s
-  Estados expandidos: 34745
-  Longitud del plan: 19 acciones
+  Tiempo de planificación: 50.840s
+  Estados expandidos: 19953
+  Longitud del plan: 26 acciones
 
   Plan:
-     1. Move(robot, (1, 7), (1, 6))
-     2. Move(robot, (1, 6), (1, 5))
-     3. Move(robot, (1, 5), (1, 4))
-     4. Move(robot, (1, 4), (1, 3))
-     5. Move(robot, (1, 3), (2, 3))
-     6. Move(robot, (2, 3), (3, 3))
-     7. Move(robot, (3, 3), (4, 3))
-     8. Move(robot, (4, 3), (5, 3))
-     9. Move(robot, (5, 3), (6, 3))
-    10. PickUp(robot, supplies_0, (6, 3))
-    11. Move(robot, (6, 3), (5, 3))
-    12. Move(robot, (5, 3), (4, 3))
-    13. Move(robot, (4, 3), (4, 2))
-    14. SetupSupplies(robot, supplies_0, (4, 2))
-    15. Move(robot, (4, 2), (4, 1))
-    16. PickUp(robot, patient_0, (4, 1))
-    17. Move(robot, (4, 1), (4, 2))
-    18. PutDown(robot, patient_0, (4, 2))
-    19. Rescue(robot, patient_0, (4, 2))
+     1. Move(robot, (1, 8), (1, 7))
+     2. Move(robot, (1, 7), (1, 6))
+     3. Move(robot, (1, 6), (1, 5))
+     4. Move(robot, (1, 5), (2, 5))
+     5. Move(robot, (2, 5), (3, 5))
+     6. Move(robot, (3, 5), (4, 5))
+     7. Move(robot, (4, 5), (5, 5))
+     8. Move(robot, (5, 5), (6, 5))
+     9. Move(robot, (6, 5), (7, 5))
+    10. Move(robot, (7, 5), (8, 5))
+    11. Move(robot, (8, 5), (9, 5))
+    12. PickUp(robot, supplies_0, (9, 5))
+    13. Move(robot, (9, 5), (8, 5))
+    14. Move(robot, (8, 5), (7, 5))
+    15. Move(robot, (7, 5), (6, 5))
+    16. Move(robot, (6, 5), (5, 5))
+    17. Move(robot, (5, 5), (4, 5))
+    18. Move(robot, (4, 5), (4, 4))
+    19. Move(robot, (4, 4), (4, 3))
+    20. Move(robot, (4, 3), (4, 2))
+    21. SetupSupplies(robot, supplies_0, (4, 2))
+    22. Move(robot, (4, 2), (4, 1))
+    23. PickUp(robot, patient_0, (4, 1))
+    24. Move(robot, (4, 1), (4, 2))
+    25. PutDown(robot, patient_0, (4, 2))
+    26. Rescue(robot, patient_0, (4, 2))
 
   Ejecutando plan...
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 34745 operaciones
-2. Espacial: O(b^d) => 34745 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 19953 operaciones
+2. Espacial: O(b^(C*/ε)) => 19953 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   smallRescue  (10×10)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(5, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 2633
+Plan length: 23
+Solution cost: 23
+
+  Tiempo de planificación: 1.895s
+  Estados expandidos: 2633
+  Longitud del plan: 23 acciones
+
+  Plan:
+     1. Move(robot, (1, 8), (2, 8))
+     2. Move(robot, (2, 8), (3, 8))
+     3. Move(robot, (3, 8), (4, 8))
+     4. Move(robot, (4, 8), (5, 8))
+     5. Move(robot, (5, 8), (6, 8))
+     6. Move(robot, (6, 8), (6, 7))
+     7. Move(robot, (6, 7), (6, 6))
+     8. Move(robot, (6, 6), (5, 6))
+     9. PickUp(robot, supplies_0, (5, 6))
+    10. Move(robot, (5, 6), (6, 6))
+    11. Move(robot, (6, 6), (6, 5))
+    12. Move(robot, (6, 5), (6, 4))
+    13. Move(robot, (6, 4), (7, 4))
+    14. Move(robot, (7, 4), (7, 3))
+    15. Move(robot, (7, 3), (7, 2))
+    16. Move(robot, (7, 2), (6, 2))
+    17. Move(robot, (6, 2), (5, 2))
+    18. SetupSupplies(robot, supplies_0, (5, 2))
+    19. Move(robot, (5, 2), (5, 1))
+    20. PickUp(robot, patient_0, (5, 1))
+    21. Move(robot, (5, 1), (5, 2))
+    22. PutDown(robot, patient_0, (5, 2))
+    23. Rescue(robot, patient_0, (5, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 2633 operaciones
+2. Espacial: O(b^(C*/ε)) => 2633 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -537,14 +638,15 @@ Plan length: 19
   Suministros: ['supplies_0']
   Puestos médicos: [(3, 2)]
 ============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 371497.
-Backward Search
-Expanded goals: 371497
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 20641
 Plan length: 31
+Solution cost: 31
 
-  Tiempo de planificación: 69.891s
-  Estados expandidos: 371497
+  Tiempo de planificación: 91.500s
+  Estados expandidos: 20641
   Longitud del plan: 31 acciones
 
   Plan:
@@ -584,63 +686,9 @@ Plan length: 31
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 371497 operaciones
-2. Espacial: O(b^d) => 371497 nodos en memoria aproximados
-3. Completitud: SÍ
-4. Optimalidad: SÍ
-------------------------------
-------------------------------------------------------------
-
-============================================================
-  Operación Fénix - ISIS-1611 Inteligencia Artificial
-============================================================
-  Layout:   tinyMulti  (7×7)
-  Problema: MultiRescueProblem
-  Pacientes: ['patient_0', 'patient_1']
-  Suministros: ['supplies_0', 'supplies_1']
-  Puestos médicos: [(1, 2)]
-============================================================
-  Planificador: backwardSearch
-[DEBUG][Backward] Solución encontrada en expansión 375588.
-Backward Search
-Expanded goals: 375588
-Plan length: 21
-
-  Tiempo de planificación: 87.347s
-  Estados expandidos: 375588
-  Longitud del plan: 21 acciones
-
-  Plan:
-     1. Move(robot, (1, 5), (1, 4))
-     2. Move(robot, (1, 4), (1, 3))
-     3. PickUp(robot, supplies_0, (1, 3))
-     4. Move(robot, (1, 3), (1, 2))
-     5. SetupSupplies(robot, supplies_0, (1, 2))
-     6. Move(robot, (1, 2), (1, 1))
-     7. Move(robot, (1, 1), (2, 1))
-     8. Move(robot, (2, 1), (3, 1))
-     9. Move(robot, (3, 1), (4, 1))
-    10. PickUp(robot, patient_1, (4, 1))
-    11. Move(robot, (4, 1), (3, 1))
-    12. Move(robot, (3, 1), (2, 1))
-    13. Move(robot, (2, 1), (1, 1))
-    14. Move(robot, (1, 1), (1, 2))
-    15. PutDown(robot, patient_1, (1, 2))
-    16. Rescue(robot, patient_1, (1, 2))
-    17. Move(robot, (1, 2), (1, 1))
-    18. PickUp(robot, patient_0, (1, 1))
-    19. Move(robot, (1, 1), (1, 2))
-    20. PutDown(robot, patient_0, (1, 2))
-    21. Rescue(robot, patient_0, (1, 2))
-
-  Ejecutando plan...
-
-  ¡Misión completada exitosamente!
-
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 375588 operaciones
-2. Espacial: O(b^d) => 375588 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 20641 operaciones
+2. Espacial: O(b^(C*/ε)) => 20641 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -655,13 +703,15 @@ Plan length: 21
   Suministros: ['supplies_0']
   Puestos médicos: [(1, 2)]
 ============================================================
-  Planificador: backwardSearch
-Backward Search
-Expanded goals: 274
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 505
 Plan length: 9
+Solution cost: 9
 
-  Tiempo de planificación: 0.042s
-  Estados expandidos: 274
+  Tiempo de planificación: 0.078s
+  Estados expandidos: 505
   Longitud del plan: 9 acciones
 
   Plan:
@@ -679,9 +729,507 @@ Plan length: 9
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 274 operaciones
-2. Espacial: O(b^d) => 274 nodos en memoria aproximados
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 505 operaciones
+2. Espacial: O(b^(C*/ε)) => 505 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   cornerRescue  (8×9)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignorePreconditionsHeuristic
+A* Planner
+Expanded states: 3277
+Plan length: 19
+Solution cost: 19
+
+  Tiempo de planificación: 1.990s
+  Estados expandidos: 3277
+  Longitud del plan: 19 acciones
+
+  Plan:
+     1. Move(robot, (1, 7), (1, 6))
+     2. Move(robot, (1, 6), (1, 5))
+     3. Move(robot, (1, 5), (1, 4))
+     4. Move(robot, (1, 4), (1, 3))
+     5. Move(robot, (1, 3), (2, 3))
+     6. Move(robot, (2, 3), (3, 3))
+     7. Move(robot, (3, 3), (4, 3))
+     8. Move(robot, (4, 3), (5, 3))
+     9. Move(robot, (5, 3), (6, 3))
+    10. PickUp(robot, supplies_0, (6, 3))
+    11. Move(robot, (6, 3), (5, 3))
+    12. Move(robot, (5, 3), (4, 3))
+    13. Move(robot, (4, 3), (4, 2))
+    14. SetupSupplies(robot, supplies_0, (4, 2))
+    15. Move(robot, (4, 2), (4, 1))
+    16. PickUp(robot, patient_0, (4, 1))
+    17. Move(robot, (4, 1), (4, 2))
+    18. PutDown(robot, patient_0, (4, 2))
+    19. Rescue(robot, patient_0, (4, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 3277 operaciones
+2. Espacial: O(b^(C*/ε)) => 3277 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   cornerRescue  (8×9)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignoreDeleteListsHeuristic
+A* Planner
+Expanded states: 1851
+Plan length: 19
+Solution cost: 19
+
+  Tiempo de planificación: 0.732s
+  Estados expandidos: 1851
+  Longitud del plan: 19 acciones
+
+  Plan:
+     1. Move(robot, (1, 7), (1, 6))
+     2. Move(robot, (1, 6), (1, 5))
+     3. Move(robot, (1, 5), (1, 4))
+     4. Move(robot, (1, 4), (1, 3))
+     5. Move(robot, (1, 3), (2, 3))
+     6. Move(robot, (2, 3), (3, 3))
+     7. Move(robot, (3, 3), (4, 3))
+     8. Move(robot, (4, 3), (5, 3))
+     9. Move(robot, (5, 3), (6, 3))
+    10. PickUp(robot, supplies_0, (6, 3))
+    11. Move(robot, (6, 3), (5, 3))
+    12. Move(robot, (5, 3), (4, 3))
+    13. Move(robot, (4, 3), (4, 2))
+    14. SetupSupplies(robot, supplies_0, (4, 2))
+    15. Move(robot, (4, 2), (4, 1))
+    16. PickUp(robot, patient_0, (4, 1))
+    17. Move(robot, (4, 1), (4, 2))
+    18. PutDown(robot, patient_0, (4, 2))
+    19. Rescue(robot, patient_0, (4, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 1851 operaciones
+2. Espacial: O(b^(C*/ε)) => 1851 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   mediumRescue  (12×12)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignoreDeleteListsHeuristic
+A* Planner
+Expanded states: 8781
+Plan length: 32
+Solution cost: 32
+
+  Tiempo de planificación: 10.507s
+  Estados expandidos: 8781
+  Longitud del plan: 32 acciones
+
+  Plan:
+     1. Move(robot, (1, 10), (1, 9))
+     2. Move(robot, (1, 9), (1, 8))
+     3. Move(robot, (1, 8), (2, 8))
+     4. Move(robot, (2, 8), (3, 8))
+     5. Move(robot, (3, 8), (4, 8))
+     6. Move(robot, (4, 8), (5, 8))
+     7. Move(robot, (5, 8), (5, 7))
+     8. Move(robot, (5, 7), (5, 6))
+     9. Move(robot, (5, 6), (4, 6))
+    10. PickUp(robot, supplies_0, (4, 6))
+    11. Move(robot, (4, 6), (5, 6))
+    12. Move(robot, (5, 6), (5, 7))
+    13. Move(robot, (5, 7), (5, 8))
+    14. Move(robot, (5, 8), (4, 8))
+    15. Move(robot, (4, 8), (3, 8))
+    16. Move(robot, (3, 8), (2, 8))
+    17. Move(robot, (2, 8), (1, 8))
+    18. Move(robot, (1, 8), (1, 7))
+    19. Move(robot, (1, 7), (1, 6))
+    20. Move(robot, (1, 6), (1, 5))
+    21. Move(robot, (1, 5), (1, 4))
+    22. Move(robot, (1, 4), (1, 3))
+    23. Move(robot, (1, 3), (1, 2))
+    24. Move(robot, (1, 2), (2, 2))
+    25. Move(robot, (2, 2), (3, 2))
+    26. Move(robot, (3, 2), (4, 2))
+    27. SetupSupplies(robot, supplies_0, (4, 2))
+    28. Move(robot, (4, 2), (4, 1))
+    29. PickUp(robot, patient_0, (4, 1))
+    30. Move(robot, (4, 1), (4, 2))
+    31. PutDown(robot, patient_0, (4, 2))
+    32. Rescue(robot, patient_0, (4, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 8781 operaciones
+2. Espacial: O(b^(C*/ε)) => 8781 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   narrowRescue  (11×11)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 4)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignoreDeleteListsHeuristic
+A* Planner
+Expanded states: 689
+Plan length: 23
+Solution cost: 23
+
+  Tiempo de planificación: 0.706s
+  Estados expandidos: 689
+  Longitud del plan: 23 acciones
+
+  Plan:
+     1. Move(robot, (1, 9), (2, 9))
+     2. Move(robot, (2, 9), (3, 9))
+     3. Move(robot, (3, 9), (4, 9))
+     4. Move(robot, (4, 9), (5, 9))
+     5. Move(robot, (5, 9), (6, 9))
+     6. Move(robot, (6, 9), (7, 9))
+     7. Move(robot, (7, 9), (8, 9))
+     8. Move(robot, (8, 9), (8, 8))
+     9. Move(robot, (8, 8), (8, 7))
+    10. Move(robot, (8, 7), (8, 6))
+    11. Move(robot, (8, 6), (7, 6))
+    12. Move(robot, (7, 6), (6, 6))
+    13. Move(robot, (6, 6), (5, 6))
+    14. PickUp(robot, supplies_0, (5, 6))
+    15. Move(robot, (5, 6), (4, 6))
+    16. Move(robot, (4, 6), (4, 5))
+    17. Move(robot, (4, 5), (4, 4))
+    18. SetupSupplies(robot, supplies_0, (4, 4))
+    19. Move(robot, (4, 4), (4, 3))
+    20. PickUp(robot, patient_0, (4, 3))
+    21. Move(robot, (4, 3), (4, 4))
+    22. PutDown(robot, patient_0, (4, 4))
+    23. Rescue(robot, patient_0, (4, 4))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 689 operaciones
+2. Espacial: O(b^(C*/ε)) => 689 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   openRescue  (12×10)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(4, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignoreDeleteListsHeuristic
+A* Planner
+Expanded states: 14241
+Plan length: 26
+Solution cost: 26
+
+  Tiempo de planificación: 20.156s
+  Estados expandidos: 14241
+  Longitud del plan: 26 acciones
+
+  Plan:
+     1. Move(robot, (1, 8), (1, 7))
+     2. Move(robot, (1, 7), (1, 6))
+     3. Move(robot, (1, 6), (1, 5))
+     4. Move(robot, (1, 5), (2, 5))
+     5. Move(robot, (2, 5), (3, 5))
+     6. Move(robot, (3, 5), (4, 5))
+     7. Move(robot, (4, 5), (5, 5))
+     8. Move(robot, (5, 5), (6, 5))
+     9. Move(robot, (6, 5), (7, 5))
+    10. Move(robot, (7, 5), (8, 5))
+    11. Move(robot, (8, 5), (9, 5))
+    12. PickUp(robot, supplies_0, (9, 5))
+    13. Move(robot, (9, 5), (8, 5))
+    14. Move(robot, (8, 5), (7, 5))
+    15. Move(robot, (7, 5), (6, 5))
+    16. Move(robot, (6, 5), (5, 5))
+    17. Move(robot, (5, 5), (4, 5))
+    18. Move(robot, (4, 5), (4, 4))
+    19. Move(robot, (4, 4), (4, 3))
+    20. Move(robot, (4, 3), (4, 2))
+    21. SetupSupplies(robot, supplies_0, (4, 2))
+    22. Move(robot, (4, 2), (4, 1))
+    23. PickUp(robot, patient_0, (4, 1))
+    24. Move(robot, (4, 1), (4, 2))
+    25. PutDown(robot, patient_0, (4, 2))
+    26. Rescue(robot, patient_0, (4, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 14241 operaciones
+2. Espacial: O(b^(C*/ε)) => 14241 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   smallRescue  (10×10)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(5, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignoreDeleteListsHeuristic
+A* Planner
+Expanded states: 1921
+Plan length: 23
+Solution cost: 23
+
+  Tiempo de planificación: 1.033s
+  Estados expandidos: 1921
+  Longitud del plan: 23 acciones
+
+  Plan:
+     1. Move(robot, (1, 8), (2, 8))
+     2. Move(robot, (2, 8), (3, 8))
+     3. Move(robot, (3, 8), (4, 8))
+     4. Move(robot, (4, 8), (5, 8))
+     5. Move(robot, (5, 8), (6, 8))
+     6. Move(robot, (6, 8), (6, 7))
+     7. Move(robot, (6, 7), (6, 6))
+     8. Move(robot, (6, 6), (5, 6))
+     9. PickUp(robot, supplies_0, (5, 6))
+    10. Move(robot, (5, 6), (6, 6))
+    11. Move(robot, (6, 6), (6, 5))
+    12. Move(robot, (6, 5), (6, 4))
+    13. Move(robot, (6, 4), (7, 4))
+    14. Move(robot, (7, 4), (7, 3))
+    15. Move(robot, (7, 3), (7, 2))
+    16. Move(robot, (7, 2), (6, 2))
+    17. Move(robot, (6, 2), (5, 2))
+    18. SetupSupplies(robot, supplies_0, (5, 2))
+    19. Move(robot, (5, 2), (5, 1))
+    20. PickUp(robot, patient_0, (5, 1))
+    21. Move(robot, (5, 1), (5, 2))
+    22. PutDown(robot, patient_0, (5, 2))
+    23. Rescue(robot, patient_0, (5, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 1921 operaciones
+2. Espacial: O(b^(C*/ε)) => 1921 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   warehouseRescue  (15×12)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(3, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignoreDeleteListsHeuristic
+A* Planner
+Expanded states: 16565
+Plan length: 31
+Solution cost: 31
+
+  Tiempo de planificación: 43.486s
+  Estados expandidos: 16565
+  Longitud del plan: 31 acciones
+
+  Plan:
+     1. Move(robot, (1, 10), (2, 10))
+     2. Move(robot, (2, 10), (3, 10))
+     3. Move(robot, (3, 10), (4, 10))
+     4. Move(robot, (4, 10), (5, 10))
+     5. Move(robot, (5, 10), (6, 10))
+     6. Move(robot, (6, 10), (7, 10))
+     7. Move(robot, (7, 10), (7, 9))
+     8. Move(robot, (7, 9), (7, 8))
+     9. Move(robot, (7, 8), (7, 7))
+    10. PickUp(robot, supplies_0, (7, 7))
+    11. Move(robot, (7, 7), (7, 8))
+    12. Move(robot, (7, 8), (7, 9))
+    13. Move(robot, (7, 9), (7, 10))
+    14. Move(robot, (7, 10), (6, 10))
+    15. Move(robot, (6, 10), (5, 10))
+    16. Move(robot, (5, 10), (4, 10))
+    17. Move(robot, (4, 10), (3, 10))
+    18. Move(robot, (3, 10), (3, 9))
+    19. Move(robot, (3, 9), (3, 8))
+    20. Move(robot, (3, 8), (3, 7))
+    21. Move(robot, (3, 7), (3, 6))
+    22. Move(robot, (3, 6), (3, 5))
+    23. Move(robot, (3, 5), (3, 4))
+    24. Move(robot, (3, 4), (3, 3))
+    25. Move(robot, (3, 3), (3, 2))
+    26. SetupSupplies(robot, supplies_0, (3, 2))
+    27. Move(robot, (3, 2), (3, 1))
+    28. PickUp(robot, patient_0, (3, 1))
+    29. Move(robot, (3, 1), (3, 2))
+    30. PutDown(robot, patient_0, (3, 2))
+    31. Rescue(robot, patient_0, (3, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 16565 operaciones
+2. Espacial: O(b^(C*/ε)) => 16565 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyBase  (5×7)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Planificador: aStarPlanner
+  Heurística: ignoreDeleteListsHeuristic
+A* Planner
+Expanded states: 277
+Plan length: 9
+Solution cost: 9
+
+  Tiempo de planificación: 0.039s
+  Estados expandidos: 277
+  Longitud del plan: 9 acciones
+
+  Plan:
+     1. Move(robot, (1, 4), (1, 3))
+     2. PickUp(robot, supplies_0, (1, 3))
+     3. Move(robot, (1, 3), (1, 2))
+     4. SetupSupplies(robot, supplies_0, (1, 2))
+     5. Move(robot, (1, 2), (1, 1))
+     6. PickUp(robot, patient_0, (1, 1))
+     7. Move(robot, (1, 1), (1, 2))
+     8. PutDown(robot, patient_0, (1, 2))
+     9. Rescue(robot, patient_0, (1, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE aStarPlanner] ---
+1. Temporal: O(b^(C*/ε)) => 277 operaciones
+2. Espacial: O(b^(C*/ε)) => 277 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyBase  (5×7)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Modo: HTN (Hierarchical Task Network)
+  HLA raíz: FullRescueMission(supplies_0,patient_0,(1, 2))
+[DEBUG HTN] Expansión 1, plan: ['FullRescueMission(supplies_0,patient_0,(1, 2))']
+[DEBUG HTN] Expansión 2, plan: ['PrepareSupplies(supplies_0,(1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 3, plan: ['Navigate((1, 4),(1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 4, plan: ['Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 5, plan: ['Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Move(robot, (1, 3), (1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+
+  Tiempo de planificación: 0.000s
+  Estados expandidos: 0
+  Longitud del plan: 9 acciones
+
+  Plan:
+     1. Move(robot, (1, 4), (1, 3))
+     2. PickUp(robot, supplies_0, (1, 3))
+     3. Move(robot, (1, 3), (1, 2))
+     4. SetupSupplies(robot, supplies_0, (1, 2))
+     5. Move(robot, (1, 2), (1, 1))
+     6. PickUp(robot, patient_0, (1, 1))
+     7. Move(robot, (1, 1), (1, 2))
+     8. PutDown(robot, patient_0, (1, 2))
+     9. Rescue(robot, patient_0, (1, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE HTN] ---
+1. Temporal: O(b^d) / Variable según dominio => 0 operaciones
+2. Espacial: O(b^d) / Variable según dominio => 0 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
@@ -696,14 +1244,17 @@ Plan length: 9
   Suministros: ['supplies_0', 'supplies_1']
   Puestos médicos: [(1, 2)]
 ============================================================
-  Planificador: backwardSearch
-Backward Search
-Expanded goals: 371271
-Plan length: 21
+  Modo: HTN (Hierarchical Task Network)
+  HLA raíz: AllRescueMissions
+[DEBUG HTN] Expansión 1, plan: ['AllRescueMissions']
+[DEBUG HTN] Expansión 2, plan: ['FullRescueMission(supplies_0,patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
+[DEBUG HTN] Expansión 3, plan: ['PrepareSupplies(supplies_0,(1, 2))', 'ExtractPatient(patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
+[DEBUG HTN] Expansión 4, plan: ['Navigate((1, 5),(1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
+[DEBUG HTN] Expansión 5, plan: ['Move(robot, (1, 5), (1, 4))', 'Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
 
-  Tiempo de planificación: 70.045s
-  Estados expandidos: 371271
-  Longitud del plan: 21 acciones
+  Tiempo de planificación: 0.001s
+  Estados expandidos: 0
+  Longitud del plan: 31 acciones
 
   Plan:
      1. Move(robot, (1, 5), (1, 4))
@@ -712,29 +1263,193 @@ Plan length: 21
      4. Move(robot, (1, 3), (1, 2))
      5. SetupSupplies(robot, supplies_0, (1, 2))
      6. Move(robot, (1, 2), (1, 1))
-     7. Move(robot, (1, 1), (2, 1))
-     8. Move(robot, (2, 1), (3, 1))
-     9. Move(robot, (3, 1), (4, 1))
-    10. PickUp(robot, patient_1, (4, 1))
-    11. Move(robot, (4, 1), (3, 1))
-    12. Move(robot, (3, 1), (2, 1))
-    13. Move(robot, (2, 1), (1, 1))
-    14. Move(robot, (1, 1), (1, 2))
-    15. PutDown(robot, patient_1, (1, 2))
-    16. Rescue(robot, patient_1, (1, 2))
-    17. Move(robot, (1, 2), (1, 1))
-    18. PickUp(robot, patient_0, (1, 1))
-    19. Move(robot, (1, 1), (1, 2))
-    20. PutDown(robot, patient_0, (1, 2))
-    21. Rescue(robot, patient_0, (1, 2))
+     7. PickUp(robot, patient_0, (1, 1))
+     8. Move(robot, (1, 1), (1, 2))
+     9. PutDown(robot, patient_0, (1, 2))
+    10. Rescue(robot, patient_0, (1, 2))
+    11. Move(robot, (1, 2), (1, 3))
+    12. Move(robot, (1, 3), (2, 3))
+    13. Move(robot, (2, 3), (3, 3))
+    14. Move(robot, (3, 3), (4, 3))
+    15. PickUp(robot, supplies_1, (4, 3))
+    16. Move(robot, (4, 3), (3, 3))
+    17. Move(robot, (3, 3), (3, 2))
+    18. Move(robot, (3, 2), (2, 2))
+    19. Move(robot, (2, 2), (1, 2))
+    20. SetupSupplies(robot, supplies_1, (1, 2))
+    21. Move(robot, (1, 2), (1, 1))
+    22. Move(robot, (1, 1), (2, 1))
+    23. Move(robot, (2, 1), (3, 1))
+    24. Move(robot, (3, 1), (4, 1))
+    25. PickUp(robot, patient_1, (4, 1))
+    26. Move(robot, (4, 1), (4, 2))
+    27. Move(robot, (4, 2), (3, 2))
+    28. Move(robot, (3, 2), (2, 2))
+    29. Move(robot, (2, 2), (1, 2))
+    30. PutDown(robot, patient_1, (1, 2))
+    31. Rescue(robot, patient_1, (1, 2))
 
   Ejecutando plan...
 
   ¡Misión completada exitosamente!
 
---- [ANÁLISIS DE backwardSearch] ---
-1. Temporal: O(b^d) => 371271 operaciones
-2. Espacial: O(b^d) => 371271 nodos en memoria aproximados
+--- [ANÁLISIS DE HTN] ---
+1. Temporal: O(b^d) / Variable según dominio => 0 operaciones
+2. Espacial: O(b^d) / Variable según dominio => 0 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyBase  (5×7)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Modo: HTN (Hierarchical Task Network)
+  HLA raíz: FullRescueMission(supplies_0,patient_0,(1, 2))
+[DEBUG HTN] Expansión 1, plan: ['FullRescueMission(supplies_0,patient_0,(1, 2))']
+[DEBUG HTN] Expansión 2, plan: ['PrepareSupplies(supplies_0,(1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 3, plan: ['Navigate((1, 4),(1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 4, plan: ['Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 5, plan: ['Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Move(robot, (1, 3), (1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+
+  Tiempo de planificación: 0.000s
+  Estados expandidos: 8
+  Longitud del plan: 9 acciones
+
+  Plan:
+     1. Move(robot, (1, 4), (1, 3))
+     2. PickUp(robot, supplies_0, (1, 3))
+     3. Move(robot, (1, 3), (1, 2))
+     4. SetupSupplies(robot, supplies_0, (1, 2))
+     5. Move(robot, (1, 2), (1, 1))
+     6. PickUp(robot, patient_0, (1, 1))
+     7. Move(robot, (1, 1), (1, 2))
+     8. PutDown(robot, patient_0, (1, 2))
+     9. Rescue(robot, patient_0, (1, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE HTN] ---
+1. Temporal: O(b^d) / Variable según dominio => 8 operaciones
+2. Espacial: O(b^d) / Variable según dominio => 8 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyMulti  (7×7)
+  Problema: MultiRescueProblem
+  Pacientes: ['patient_0', 'patient_1']
+  Suministros: ['supplies_0', 'supplies_1']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Modo: HTN (Hierarchical Task Network)
+  HLA raíz: AllRescueMissions
+[DEBUG HTN] Expansión 1, plan: ['AllRescueMissions']
+[DEBUG HTN] Expansión 2, plan: ['FullRescueMission(supplies_0,patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
+[DEBUG HTN] Expansión 3, plan: ['PrepareSupplies(supplies_0,(1, 2))', 'ExtractPatient(patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
+[DEBUG HTN] Expansión 4, plan: ['Navigate((1, 5),(1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
+[DEBUG HTN] Expansión 5, plan: ['Move(robot, (1, 5), (1, 4))', 'Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))', 'FullRescueMission(supplies_1,patient_1,(1, 2))']
+
+  Tiempo de planificación: 0.001s
+  Estados expandidos: 16
+  Longitud del plan: 31 acciones
+
+  Plan:
+     1. Move(robot, (1, 5), (1, 4))
+     2. Move(robot, (1, 4), (1, 3))
+     3. PickUp(robot, supplies_0, (1, 3))
+     4. Move(robot, (1, 3), (1, 2))
+     5. SetupSupplies(robot, supplies_0, (1, 2))
+     6. Move(robot, (1, 2), (1, 1))
+     7. PickUp(robot, patient_0, (1, 1))
+     8. Move(robot, (1, 1), (1, 2))
+     9. PutDown(robot, patient_0, (1, 2))
+    10. Rescue(robot, patient_0, (1, 2))
+    11. Move(robot, (1, 2), (2, 2))
+    12. Move(robot, (2, 2), (3, 2))
+    13. Move(robot, (3, 2), (3, 3))
+    14. Move(robot, (3, 3), (4, 3))
+    15. PickUp(robot, supplies_1, (4, 3))
+    16. Move(robot, (4, 3), (4, 2))
+    17. Move(robot, (4, 2), (3, 2))
+    18. Move(robot, (3, 2), (2, 2))
+    19. Move(robot, (2, 2), (1, 2))
+    20. SetupSupplies(robot, supplies_1, (1, 2))
+    21. Move(robot, (1, 2), (1, 1))
+    22. Move(robot, (1, 1), (2, 1))
+    23. Move(robot, (2, 1), (3, 1))
+    24. Move(robot, (3, 1), (4, 1))
+    25. PickUp(robot, patient_1, (4, 1))
+    26. Move(robot, (4, 1), (4, 2))
+    27. Move(robot, (4, 2), (3, 2))
+    28. Move(robot, (3, 2), (2, 2))
+    29. Move(robot, (2, 2), (1, 2))
+    30. PutDown(robot, patient_1, (1, 2))
+    31. Rescue(robot, patient_1, (1, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE HTN] ---
+1. Temporal: O(b^d) / Variable según dominio => 16 operaciones
+2. Espacial: O(b^d) / Variable según dominio => 16 nodos en memoria aproximados
+3. Completitud: SÍ
+4. Optimalidad: SÍ
+------------------------------
+------------------------------------------------------------
+
+============================================================
+  Operación Fénix - ISIS-1611 Inteligencia Artificial
+============================================================
+  Layout:   tinyBase  (5×7)
+  Problema: SimpleRescueProblem
+  Pacientes: ['patient_0']
+  Suministros: ['supplies_0']
+  Puestos médicos: [(1, 2)]
+============================================================
+  Modo: HTN (Hierarchical Task Network)
+  HLA raíz: FullRescueMission(supplies_0,patient_0,(1, 2))
+[DEBUG HTN] Expansión 1, plan: ['FullRescueMission(supplies_0,patient_0,(1, 2))']
+[DEBUG HTN] Expansión 2, plan: ['PrepareSupplies(supplies_0,(1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 3, plan: ['Navigate((1, 4),(1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 4, plan: ['Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Navigate((1, 3),(1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+[DEBUG HTN] Expansión 5, plan: ['Move(robot, (1, 4), (1, 3))', 'PickUp(robot, supplies_0, (1, 3))', 'Move(robot, (1, 3), (1, 2))', 'SetupSupplies(robot, supplies_0, (1, 2))', 'ExtractPatient(patient_0,(1, 2))']
+
+  Tiempo de planificación: 0.000s
+  Estados expandidos: 8
+  Longitud del plan: 9 acciones
+
+  Plan:
+     1. Move(robot, (1, 4), (1, 3))
+     2. PickUp(robot, supplies_0, (1, 3))
+     3. Move(robot, (1, 3), (1, 2))
+     4. SetupSupplies(robot, supplies_0, (1, 2))
+     5. Move(robot, (1, 2), (1, 1))
+     6. PickUp(robot, patient_0, (1, 1))
+     7. Move(robot, (1, 1), (1, 2))
+     8. PutDown(robot, patient_0, (1, 2))
+     9. Rescue(robot, patient_0, (1, 2))
+
+  Ejecutando plan...
+
+  ¡Misión completada exitosamente!
+
+--- [ANÁLISIS DE HTN] ---
+1. Temporal: O(b^d) / Variable según dominio => 8 operaciones
+2. Espacial: O(b^d) / Variable según dominio => 8 nodos en memoria aproximados
 3. Completitud: SÍ
 4. Optimalidad: SÍ
 ------------------------------
